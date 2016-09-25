@@ -1,4 +1,5 @@
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)]()
+[![Build Status](https://travis-ci.org/andela-kndegwa/CP1.svg?branch=develop)](https://travis-ci.org/andela-kndegwa/CP1)
 [![Kimani Ndegwa](https://img.shields.io/badge/Kimani%20Ndegwa-FirstCheckpoint-green.svg)]()
 
 # AMITY ROOM ALLOCATION SYSTEM.
