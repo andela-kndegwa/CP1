@@ -1,3 +1,6 @@
+room_names = []
+
+
 class Room(object):
     """
     This class models both the Living Space and Office
@@ -15,6 +18,15 @@ class Room(object):
     def create_room(self, room_name, room_type):
         self.room_name = room_name
         self.room_type = room_type
+        self.occupants = []
+        if type(self.room_name) is str:
+            room_names.append(self.room_name.title())
+
+    def check_room_occupants(self):
+        if len(self.occupants) == 0:
+            return "There are no occupants in this room as yet."
+        for occupant in self.occupants:
+            return occupant + '\n'
 
 
 class LivingSpace(Room):
@@ -23,7 +35,14 @@ class LivingSpace(Room):
     class meaning it inherits characteristics such as
     'room_name' and 'room_id'.
     """
-    pass
+
+    def __init__(self, room_name, room_type, room_capacity):
+        Room.__init__(self, room_name, room_type)
+        self.room_capacity = 4
+
+    def check_occupants(self, room_name):
+        if self.occupants >= self.room_capacity:
+            return "Maxium Number Reached"
 
 
 class Office(Room):
@@ -32,4 +51,16 @@ class Office(Room):
     class meaning it inherits characteristics such as
     'room_name' and 'room_id'.
     """
-    pass
+
+    def __init__(self, room_name, room_type, room_capacity):
+        Room.__init__(self, room_name, room_type)
+        self.room_capacity = 6
+
+    def check_occupants(self, room_name):
+        if self.occupants >= self.room_capacity:
+            return "Maxium Number Reached"
+
+
+room1 = Room()
+room1.create_room('Valhalla', 'O')
+room1.check_occupants('Valhalla')
