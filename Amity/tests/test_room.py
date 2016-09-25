@@ -10,7 +10,7 @@ class TestRoomFunctionality(unittest.TestCase):
         '''
         Room1 needs to be an instance of Room class.
         '''
-        room1 = Room('Valhalla')
+        room1 = Room()
         self.assertIsInstance(room1, Room)
 
     def test_created_room_takes_name(self):
@@ -18,14 +18,16 @@ class TestRoomFunctionality(unittest.TestCase):
         The rooms have to take the exact name specified
         in the string. Thus ANY OTHER case should fail
         '''
-        room2 = Room('Clojure')
-        self.assertEqual(room2.name, 'Clojure')
-        self.assertNotEqual(room2.name, 'CLOJURE')
-        self.assertNotEqual(room2.name, 'cLOJuRE')
+        room2 = Room()
+        room2.create_room('Clojure', 'Living Space')
+        self.assertEqual(room2.room_name, 'Clojure')
+        self.assertNotEqual(room2.room_name, 'CLOJURE')
+        self.assertNotEqual(room2.room_name, 'cLOJuRE')
 
     def test_rooms_names_are_strings_only(self):
-        room3 = Room('Oculus')
-        self.assertTrue(type(room3.name), str)
+        room3 = Room()
+        room3.create_room('Oculus', 'Office')
+        self.assertTrue(type(room3.room_name), str)
 
 
 if __name__ == '__main__':

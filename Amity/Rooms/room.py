@@ -8,7 +8,13 @@ class Room(object):
     1. Room name alias room_name
     2. Room ID alias room_id
     """
-    pass
+
+    def __init__(self):
+        pass
+
+    def create_room(self, room_name, room_type):
+        self.room_name = room_name
+        self.room_type = room_type
 
 
 class LivingSpace(Room):
