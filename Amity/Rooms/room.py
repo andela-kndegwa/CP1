@@ -59,4 +59,3 @@ class Office(Room):
     def check_occupants(self, room_name):
         if self.occupants >= self.room_capacity:
             return "Maxium Number Reached"
-
