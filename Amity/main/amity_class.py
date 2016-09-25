@@ -1,3 +1,9 @@
+import sys
+from os import path
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+from Rooms.room import LivingSpace, Office
+
+
 class Amity(object):
     """
     The Amity class is intended to be th main class in this project.
@@ -6,11 +12,4 @@ class Amity(object):
     The CLI application thus calls Amity because it is the gateway
     to the whole application
     """
-
-    def __init__(
-            self,
-            total_rooms,
-            rooms_allocated,
-            rooms_unallocated,
-            total_persons):
-        pass
+    pass

@@ -35,14 +35,7 @@ class LivingSpace(Room):
     class meaning it inherits characteristics such as
     'room_name' and 'room_id'.
     """
-
-    def __init__(self, room_name, room_type, room_capacity):
-        Room.__init__(self, room_name, room_type)
-        self.room_capacity = 4
-
-    def check_occupants(self, room_name):
-        if self.occupants >= self.room_capacity:
-            return "Maxium Number Reached"
+    room_capacity = 4
 
 
 class Office(Room):
@@ -51,12 +44,4 @@ class Office(Room):
     class meaning it inherits characteristics such as
     'room_name' and 'room_id'.
     """
-
-    def __init__(self, room_name, room_type, room_capacity):
-        Room.__init__(self, room_name, room_type)
-        self.room_capacity = 6
-
-    def check_occupants(self, room_name):
-        if self.occupants >= self.room_capacity:
-            return "Maxium Number Reached"
-
+    room_capacity = 6

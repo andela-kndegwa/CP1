@@ -11,6 +11,7 @@ class TestRoomFunctionality(unittest.TestCase):
     class as modelled together with its subclasses LivingSpace &
     Office.
     """
+
     def test_created_room_is_instance(self):
         '''
         Room1 needs to be an instance of Room class.
@@ -38,6 +39,20 @@ class TestRoomFunctionality(unittest.TestCase):
         room3 = Room()
         room3.create_room('Oculus', 'Office')
         self.assertTrue(type(room3.room_name), str)
+
+    def test_room_capacity_is_not_exceeded(self):
+        room4 = LivingSpace()
+        room4.create_room('TestLivingSpace', 'Living Space')
+        self.assertEquals(room4.room_capacity, 4)
+        room5 = Office()
+        room5.create_room('TestOffice', 'Office')
+        self.assertEquals(room5.room_capacity, 6)
+
+    def test_new_room_is_initially_empty(self):
+        r6 = Office()
+        r6.create_room('A', 'B')
+        self.assertIs(type(r6.occupants), list)
+        self.assertEqual(len(r6.occupants), 0)
 
 
 if __name__ == '__main__':
