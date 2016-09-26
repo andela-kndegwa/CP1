@@ -45,3 +45,4 @@ class Office(Room):
     'room_name' and 'room_id'.
     """
     room_capacity = 6
+
