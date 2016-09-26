@@ -24,7 +24,6 @@ class Room(object):
                 return occupant + '\n'
 
 
-
 class LivingSpace(Room):
     """
     The Office class is also a sub-class of the 'Room'
