@@ -23,18 +23,3 @@ class Room(object):
             for occupant in self.occupants:
                 return occupant + '\n'
 
-
-class LivingSpace(Room):
-    """
-    The Office class is also a sub-class of the 'Room'
-    class meaning it inherits 'room_name'.
-    """
-    room_capacity = 4
-
-
-class Office(Room):
-    """
-    The Office class is also a sub-class of the 'Room'
-    class meaning it inherits 'room_name'.
-    """
-    room_capacity = 6

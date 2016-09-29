@@ -10,22 +10,11 @@ class Person(object):
     2. Personal Identifier denoted as 'p_id'
     """
 
-    def __init__(self, person_identifier, person_name):
+    def __init__(self):
+        pass
 
+    def create_person(self, person_name, person_type, wants_accomodation):
+        self.person_name = person_name
+        self.person_type = person_type
+        self.wants_accomodation = wants_accomodation
 
-class Fellow(Person):
-    """
-    The Fellow class is a sub-class of the 'Person'
-    class meaning it inherits characteristics such as
-    'name' and 'p_id'.
-    """
-    pass
-
-
-class Staff(Person):
-    """
-    The Staff class is also a sub-class of the 'Person'
-    class meaning it inherits characteristics such as
-    'name' and 'p_id'.
-    """
-    pass

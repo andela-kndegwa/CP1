@@ -1,3 +1,7 @@
+from ..Rooms.room import Room
+from ..Rooms.living_space import LivingSpace
+from ..Rooms.office import Office
+
 import unittest  # A common Python testing framework
 """
 Also makes a relative import to get the Room, Living Space
@@ -40,13 +44,13 @@ class TestRoomFunctionality(unittest.TestCase):
         room3.create_room('Oculus', 'Office')
         self.assertTrue(type(room3.room_name), str)
 
-    def test_room_capacity_is_not_exceeded(self):
+    def test_room_capacity(self):
         room4 = LivingSpace()
         room4.create_room('TestLivingSpace', 'Living Space')
-        self.assertEquals(room4.room_capacity, 4)
+        self.assertEquals(room4.roomCapacity, 4)
         room5 = Office()
         room5.create_room('TestOffice', 'Office')
-        self.assertEquals(room5.room_capacity, 6)
+        self.assertEquals(room5.roomCapacity, 6)
 
     def test_new_room_is_initially_empty(self):
         r6 = Office()
@@ -54,13 +58,3 @@ class TestRoomFunctionality(unittest.TestCase):
         self.assertIs(type(r6.occupants), list)
         self.assertEqual(len(r6.occupants), 0)
 
-
-if __name__ == '__main__':
-    if __package__ is None:
-        import sys
-        from os import path
-        sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-        from Rooms.room import Room, LivingSpace, Office
-        unittest.main()
-    else:
-        from ..Rooms.room import Room, LivingSpace, Office
