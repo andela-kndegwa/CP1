@@ -17,4 +17,3 @@ class Person(object):
         self.person_name = person_name
         self.person_type = person_type
         self.wants_accomodation = wants_accomodation
-
