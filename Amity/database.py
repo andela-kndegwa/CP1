@@ -1,8 +1,13 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base
 
-engine = create_engine('sqlite:///test_amity.db')
+db_name = 'test_amity.db'
+if os.path.exists(db_name):
+    os.remove(db_name)
+
+engine = create_engine('sqlite:///' + db_name)
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
 Base.metadata.bind = engine
