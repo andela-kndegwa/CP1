@@ -11,10 +11,9 @@ class Room(object):
     def __init__(self):
         pass
 
-    def create_room(self, room_name, room_type):
+    def create_room(self, room_name):
         self.room_name = room_name
-        self.room_type = room_type
-        self.occupants = []
+        self.occupants = [] 
 
     def check_room_occupants(self):
         if len(self.occupants) == 0:
