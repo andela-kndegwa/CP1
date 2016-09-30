@@ -1,6 +1,6 @@
 from ..Rooms.room import Room
 from ..Rooms.living_space import LivingSpace
-from ..Rooms.office import Office
+from ..Rooms.office import OfficeSpace
 
 import unittest  # A common Python testing framework
 """
@@ -34,27 +34,27 @@ class TestRoomFunctionality(unittest.TestCase):
 
         '''
         room2 = Room()
-        room2.create_room('Clojure', 'Living Space')
+        room2.create_room('Clojure')
         self.assertEqual(room2.room_name, 'Clojure')
         self.assertNotEqual(room2.room_name, 'CLOJURE')
         self.assertNotEqual(room2.room_name, 'cLOJuRE')
 
     def test_rooms_names_are_strings_only(self):
         room3 = Room()
-        room3.create_room('Oculus', 'Office')
+        room3.create_room('Oculus')
         self.assertTrue(type(room3.room_name), str)
 
     def test_room_capacity(self):
         room4 = LivingSpace()
-        room4.create_room('TestLivingSpace', 'Living Space')
+        room4.create_room('TestLivingSpace')
         self.assertEquals(room4.roomCapacity, 4)
-        room5 = Office()
-        room5.create_room('TestOffice', 'Office')
+        room5 = OfficeSpace()
+        room5.create_room('TestOffice')
         self.assertEquals(room5.roomCapacity, 6)
 
     def test_new_room_is_initially_empty(self):
-        r6 = Office()
-        r6.create_room('A', 'B')
+        r6 = OfficeSpace()
+        r6.create_room('A')
         self.assertIs(type(r6.occupants), list)
         self.assertEqual(len(r6.occupants), 0)
 

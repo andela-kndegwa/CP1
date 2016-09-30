@@ -4,5 +4,5 @@ python:
   - "3.4"
 # command to run tests
 script:
-  - nosetests
+  - nosetests Amity/tests
 
