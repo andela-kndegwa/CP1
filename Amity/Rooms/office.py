@@ -7,3 +7,8 @@ class OfficeSpace(Room):
     class meaning it inherits 'room_name'.
         """
     roomCapacity = 6
+    occupants = []
+
+    def get_all_occupants(self):
+        pass
+

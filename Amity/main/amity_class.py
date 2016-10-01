@@ -12,4 +12,18 @@ class Amity(object):
     The CLI application thus calls Amity because it is the gateway
     to the whole application
     """
-    pass
+
+    def __init__(self):
+        pass
+
+    def get_all_staff(self):
+        pass
+
+    def get_all_fellows(self):
+        pass
+
+    def get_all_offices(self):
+        pass
+
+    def get_all_living_spaces(self):
+        pass

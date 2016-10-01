@@ -9,7 +9,8 @@ class Person(object):
     1. Name denoted as 'name'
     2. Personal Identifier denoted as 'p_id'
     """
-
+    person_profile = {}
+    
     def __init__(self):
         pass
 

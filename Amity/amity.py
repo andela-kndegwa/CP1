@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 from models import Fellow, Staff, Office, LivingSpace
 from database import session
 from Rooms.living_space import LivingSpace
@@ -19,7 +19,3 @@ class Amity(object):
             office = Office.create_room(room_name)
             session.add(office)
             session.commit()
-
-
-a = Amity()
-a.create_room('Valhalla', 'O')
