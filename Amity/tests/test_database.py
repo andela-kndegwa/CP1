@@ -1,7 +1,7 @@
 import os
 import unittest
 from sqlalchemy.ext.declarative import declarative_base
-
+from ..models import Fellow
 Base = declarative_base()
 
 
@@ -13,7 +13,15 @@ class TestDatabaseFunctionality(unittest.TestCase):
     the action of first removing a database before creating
     it. Pretty COOL!
     '''
+
     def test_database_is_removed_if_exists(self):
+        ''' 
+        This test first creates a test_amity_exists.db file 
+        and proceeds to remove it. After removing,
+        assert that the file does not exist using the os.path.exits
+        file command that ties to the os.path.aA
+
+        '''
         db_name = "test_amity_exists.db"
         if os.path.exists(db_name):
             os.remove(db_name)
@@ -23,5 +31,6 @@ class TestDatabaseFunctionality(unittest.TestCase):
         session = sessionmaker()
         session.configure(bind=engine)
         Base.metadata.create_all(engine)
-        os.remove(db_name)
-        self.assertTrue("sqlite:///" + db_name)
+        if os.path.exists(db_name):
+            os.remove(db_name)
+        self.assertFalse(os.path.exists(db_name))

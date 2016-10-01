@@ -7,3 +7,6 @@ class LivingSpace(Room):
     class meaning it inherits 'room_name'.
     """
     roomCapacity = 4
+
+    def get_occupants(self):
+        pass

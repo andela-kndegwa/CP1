@@ -8,3 +8,9 @@ class Staff(Person):
     'name' and 'p_id'.
     """
     wants_accomodation = False
+
+    def get_all_staff(self):
+        pass
+
+    def get_office_allocated(self):
+            pass

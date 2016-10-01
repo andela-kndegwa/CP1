@@ -8,6 +8,12 @@ class Fellow(Person):
     'name' and 'p_id'.
     """
 
+    def get_office_allocated(self):
+        pass
+
+    def get_living_space_allocated(self):
+        pass
+
     def check_wants_accomodation(self):
         if self.wants_accomodation.upper() == 'Y':
             return 'Wants accomodation'
