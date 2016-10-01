@@ -27,3 +27,16 @@ class TestPersonFunctionality(unittest.TestCase):
     def test_staff_is_right_instance(self):
         staff = Staff()
         self.assertIsInstance(staff, Staff)
+
+    def test_if_fellow_wants_accomodation(self):
+        f = Fellow()
+        f.person_name = 'Kimani'
+        f.wants_accomodation = 'y'
+        self.assertEquals(f.check_wants_accomodation(), 'Wants accomodation')
+
+    def test_last_response_invalid(self):
+        f2 = Fellow()
+        f2.person_name = 'Wanja'
+        f2.wants_accomodation = 'sajkjak'
+        self.assertEqual(f2.check_wants_accomodation(),
+                         'Last response invalid')

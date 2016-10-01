@@ -7,4 +7,11 @@ class Fellow(Person):
     class meaning it inherits characteristics such as
     'name' and 'p_id'.
     """
-    pass
+
+    def check_wants_accomodation(self):
+        if self.wants_accomodation.upper() == 'Y':
+            return 'Wants accomodation'
+        elif self.wants_accomodation.upper() == 'N':
+            return 'Declines accomodaion'
+        else:
+            return 'Last response invalid'

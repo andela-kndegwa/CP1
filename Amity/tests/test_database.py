@@ -6,6 +6,13 @@ Base = declarative_base()
 
 
 class TestDatabaseFunctionality(unittest.TestCase):
+    '''
+    This Class is simply used to test that a database
+    created and removed using the os function does
+    not persist in the file system. It also enables us test 
+    the action of first removing a database before creating
+    it. Pretty COOL!
+    '''
     def test_database_is_removed_if_exists(self):
         db_name = "test_amity_exists.db"
         if os.path.exists(db_name):
