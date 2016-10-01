@@ -10,3 +10,4 @@ class LivingSpace(Room):
 
     def get_occupants(self):
         pass
+
