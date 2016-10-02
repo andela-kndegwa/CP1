@@ -4,6 +4,11 @@ except:
     from distutils import setup
 
 
+dependencies = []
+file = open('requirements.txt', 'r')
+for dep in file.readlines():
+    dependencies.append(dep)
+
 setup(
     name='Amity',
     version='1.0.0',
@@ -11,14 +16,11 @@ setup(
     url='https://github.com/andela-kndegwa/CP1',
     author='Kimani Ndegwa',
     author_email='kimani.ndegwa@andela.com',
+    install_requires=dependencies,
     packages=['Amity'],
     entry_points={
             'console_scripts': [
-                'my_project = my_project.__main__:main'
+                'amity=Amity.ui:enter_amity'
             ]
     },
-
-
-
-
 )
