@@ -20,7 +20,7 @@ setup(
     packages=['Amity'],
     entry_points={
             'console_scripts': [
-                'amity=Amity.ui:enter_amity'
+                'amity=amity:start'
             ]
     },
 )

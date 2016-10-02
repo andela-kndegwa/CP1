@@ -17,14 +17,12 @@ def enter_amity():
             sys.stdout.flush()
             time.sleep(0.04)
     click.secho("DONE!", bold=True)
-
+    #Amity Pyfilget format begins here!
     click.secho('=' * 75, fg='cyan')
     click.secho('*' * 75, fg='yellow')
-    click.secho('=' * 75, fg='cyan')
     init(strip=not sys.stdout.isatty())  # strip colors if stdout is redirected
     cprint(figlet_format('AMITY', font='roman'),
            'cyan', attrs=['bold'])
-    click.secho('=' * 75, fg='cyan')
     click.secho('*' * 75, fg='yellow')
     click.secho('=' * 75, fg='cyan')
 
