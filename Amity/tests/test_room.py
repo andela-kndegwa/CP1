@@ -1,8 +1,11 @@
+import unittest  # A common Python testing framework
+from os import sys, path
 from ..Rooms.room import Room
 from ..Rooms.living_space import LivingSpace
 from ..Rooms.office import OfficeSpace
 
-import unittest  # A common Python testing framework
+sys.path.append('/home/sims/Desktop/CP1')
+
 """
 Also makes a relative import to get the Room, Living Space
 and Office classes just created for the purpose of testing
@@ -34,27 +37,26 @@ class TestRoomFunctionality(unittest.TestCase):
 
         '''
         room2 = Room()
-        room2.create_room('Clojure')
+        room2.create_room('Clojure', 'O')
         self.assertEqual(room2.room_name, 'Clojure')
         self.assertNotEqual(room2.room_name, 'CLOJURE')
         self.assertNotEqual(room2.room_name, 'cLOJuRE')
 
     def test_rooms_names_are_strings_only(self):
         room3 = Room()
-        room3.create_room('Oculus')
+        room3.create_room('Oculus', 'L')
         self.assertTrue(type(room3.room_name), str)
 
     def test_room_capacity(self):
         room4 = LivingSpace()
-        room4.create_room('TestLivingSpace')
+        room4.create_room('TestLivingSpace', 'O')
         self.assertEquals(room4.roomCapacity, 4)
         room5 = OfficeSpace()
-        room5.create_room('TestOffice')
+        room5.create_room('TestOffice', 'L')
         self.assertEquals(room5.roomCapacity, 6)
 
     def test_new_room_is_initially_empty(self):
         r6 = OfficeSpace()
-        r6.create_room('A')
+        r6.create_room('A', 'L')
         self.assertIs(type(r6.occupants), list)
         self.assertEqual(len(r6.occupants), 0)
-
