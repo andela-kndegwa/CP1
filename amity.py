@@ -65,7 +65,7 @@ class Interactive_Amity(cmd.Cmd):
     prompt = '(amity)===>'
 
     @args_cmd
-    def do_create_room(self, line):
+    def do_create_room(self, arg):
         print("This will create a room.")
 
     @args_cmd
