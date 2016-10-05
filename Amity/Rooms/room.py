@@ -21,3 +21,4 @@ class Room(object):
         else:
             for occupant in self.occupants:
                 return occupant + '\n'
+         

@@ -58,3 +58,7 @@ class TestRoomFunctionality(unittest.TestCase):
         self.assertIs(type(r6.occupants), list)
         self.assertEqual(len(r6.occupants), 0)
 
+    def test_check_room_occupants(self):
+        r7 = OfficeSpace()
+        self.assertEqual(r7.check_room_occupants(),
+                         "There are no occupants in this room as yet.")

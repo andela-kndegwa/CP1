@@ -1,7 +1,6 @@
 import os
 import unittest
 from sqlalchemy.ext.declarative import declarative_base
-from ..models import Fellow
 Base = declarative_base()
 
 
@@ -9,14 +8,14 @@ class TestDatabaseFunctionality(unittest.TestCase):
     '''
     This Class is simply used to test that a database
     created and removed using the os function does
-    not persist in the file system. It also enables us test 
+    not persist in the file system. It also enables us test
     the action of first removing a database before creating
     it. Pretty COOL!
     '''
 
     def test_database_is_removed_if_exists(self):
-        ''' 
-        This test first creates a test_amity_exists.db file 
+        '''
+        This test first creates a test_amity_exists.db file
         and proceeds to remove it. After removing,
         assert that the file does not exist using the os.path.exits
         file command that ties to the os.path.aA
