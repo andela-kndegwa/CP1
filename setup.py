@@ -4,10 +4,7 @@ except:
     from distutils import setup
 
 
-dependencies = []
-file = open('requirements.txt', 'r')
-for dep in file.readlines():
-    dependencies.append(dep)
+dependencies = ['docopt']
 
 setup(
     name='Amity',

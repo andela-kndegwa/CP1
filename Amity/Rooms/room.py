@@ -47,9 +47,10 @@ class Room(object):
         if len(self.occupants) == 0:
             return "There are no occupants in this room as yet."
         else:
-            for occupant in self.occupants:
-                return occupant + '\n'
+            return len(self.occupants)
 
+    def add_person(self, person_identifier):
+        if person_identifier:
+            self.occupants.append(self.person_identifier)
+        return 'Please add a person identifier to add to the room'
 
-a = Room()
-a.create_room('Valhalla', 'O ')

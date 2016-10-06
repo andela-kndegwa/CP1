@@ -40,4 +40,3 @@ class TestPersonFunctionality(unittest.TestCase):
         f2.wants_accomodation = 'sajkjak'
         self.assertEqual(f2.check_wants_accomodation(),
                          'Last response invalid')
-
