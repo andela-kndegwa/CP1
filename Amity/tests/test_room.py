@@ -62,3 +62,15 @@ class TestRoomFunctionality(unittest.TestCase):
         r7 = OfficeSpace()
         self.assertEqual(r7.check_room_occupants(),
                          "There are no occupants in this room as yet.")
+
+    def test_check_room_occupants_changes_after_add_person(self):
+        '''
+        This test is used to assert that before adding a person
+        we have a number less than after we add a person to a
+        certain room.
+        '''
+        r8 = LivingSpace()
+        num_before = r8.check_room_occupants()
+        r8.add_person('A')
+        num_after = r8.check_room_occupants()
+        self.assertGreater(num_after, num_before)
