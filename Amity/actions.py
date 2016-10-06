@@ -1,51 +1,73 @@
-from Rooms.office import OfficeSpace
-from Rooms.living_space import LivingSpace
+from random import randint
+
+offices = []
+living_spaces = []
+rooms = {
+    'offices': offices,
+    'livingSpaces': living_spaces
+
+}
+
+staff = []
+fellows = []
+
+people = {
+    'staff': staff,
+    'fellows': fellows
+
+}
 
 
-class Amity(object):
+def create_room(room_type, *args):
     '''
-    This class is the main class as per the UML diagrams
-    drawn in the /designs folder. It models the whole Amity
-    system and seeks to bring all the functions and attributes
-    into one central place.
+    This action is intended to create a room
+    with its first argument defining the room type
+    and then proceeds to add them to their respective
+    list as either office or livingSpace
+
     '''
-
-    def __init__(self):
-        self.rooms = []
-        self.offices = []
-        self.living_spaces = []
-        self.allocated_rooms = []
-        self.unallocated_rooms = []
-        self.available_rooms = []
-        self.unavailable_rooms = []
-        self.staff = []
-        self.fellows = []
-
-    def create_room(self, room_name, room_type):
-        self.room_name = room_name
-        self.room_type = room_type
-        try:
-            if self.room_name and self.room_type:
-                if self.room_name in self.rooms:
-                    return 'Room name already exists.'
-                if len(self.room_name) > 1:
-                    for room in self.room_name:
-                        if self.room_type is 'O':
-                            room = OfficeSpace()
-                            self.offices.append(room)
-                            msg = 'The office(s) have been successfully added'
-                        elif self.room_type is 'L':
-                            room = LivingSpace()
-                            self.living_spaces.append(room)
-                            msg = 'The living spaces(s) have been successfully added'
-                else:
-                    return 'msg'
-        except Exception:
-            msg = 'An error occurred running your command.'
-        return msg
+    try:
+        if room_type.upper() not in ['O', 'L']:
+            return 'Invalid Room Type entered'
+        for room in args:
+            if room_type.upper() == 'O':
+                offices.append(room)
+            elif room_type.upper() == 'L':
+                living_spaces.append(room)
+    except Exception:
+        return 'An error occurred in the command'
 
 
-a = Amity()
-print(a.offices)
-a.create_room(['Valhalla', 'Oculus'], 'O')
-print (a.offices)
+def add_person(first_name, last_name, person_type):
+    if type(first_name) != str or type(last_name) != str:
+        return 'Invalid Name type passed'
+    if person_type not in ['F', 'S']:
+        return 'Invalid Person Type entered.'
+    try:
+        full_name = first_name + ' ' + last_name
+        if person_type.upper() == 'F':
+            fellows.append(full_name)
+            people['fellows'].append(full_name)
+        elif person_type.upper() == 'S':
+            staff.append(full_name)
+            people['staff'].append(full_name)
+        return 'The user %s has been successfully added' % full_name
+    except Exception:
+        return 'Error'
+
+
+def get_room_type(room):
+    if room in rooms['offices']:
+        return 'Is Office'
+    elif room in rooms['livingSpaces']:
+        return 'Is Living Space'
+    else:
+        return 'The room does not exist in our system'
+
+
+def allocate_room(person_id, room_name):
+    pass
+
+
+def reallocate_room(person_id, room_type):
+    pass

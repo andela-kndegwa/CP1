@@ -12,3 +12,5 @@ class OfficeSpace(Room):
     def get_all_occupants(self):
         pass
 
+
+
