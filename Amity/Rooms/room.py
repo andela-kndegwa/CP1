@@ -36,6 +36,10 @@ class Room(object):
             elif self.room_type.upper() == 'L':
                 living = LivingSpace()
                 self.living_spaces.append(living)
+
+                self.offices.append(room_name)
+                return self.offices
+            elif self.room_type.upper() == 'L':
                 self.living_spaces.append(room_name)
                 return self.living_spaces
             else:
@@ -48,9 +52,4 @@ class Room(object):
             return "There are no occupants in this room as yet."
         else:
             return len(self.occupants)
-
-    def add_person(self, person_identifier):
-        if person_identifier:
-            self.occupants.append(self.person_identifier)
-        return 'Please add a person identifier to add to the room'
 

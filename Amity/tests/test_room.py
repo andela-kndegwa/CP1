@@ -4,7 +4,11 @@ from ..Rooms.room import Room
 from ..Rooms.living_space import LivingSpace
 from ..Rooms.office import OfficeSpace
 
+<<<<<<< HEAD
 sys.path.append('/home/sims/Desktop/CP1')
+=======
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+>>>>>>> 4e16d0384590252e9ca8e6c72bf7f74a42d90052
 
 """
 Also makes a relative import to get the Room, Living Space
