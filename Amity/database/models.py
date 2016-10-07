@@ -17,7 +17,7 @@ class DataBaseManager(object):
         self.databaseName = 'amity.sqlite'
         # Create an engine that stores data in the local directory's
         # sqlalchemy_example.db file.
-        self.engine = create_engine('sqlite:///test_amity.db')
+        self.engine = create_engine('sqlite:///' + self.databaseName)
         self.session = sessionmaker()
         self.session.configure(bind=self.engine)
         # Create all tables in the engine. This is equivalent to "Create Table"
