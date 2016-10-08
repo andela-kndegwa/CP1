@@ -1,11 +1,10 @@
 import unittest
-from actions import *
-
+from ..actions import *
 
 class TestActionsAmity(unittest.TestCase):
     def test_creates_a_single_room(self):
         create_room('O', 'Krypton')
-        #last room is Krypton check
+        # last room is Krypton check
         self.assertIsNotNone(rooms)
 
     def test_returns_valid_type_living_space(self):
@@ -24,10 +23,10 @@ class TestActionsAmity(unittest.TestCase):
         create_room('o', 'Kamu', 'Kaba', 'NY')
         self.assertEqual(len(rooms['offices']), 3)
 
-    def test_add_person(self):
-        test = add_person('Seralynnette', 'Nduta', 'S')
-        self.assertEqual(
-            test, 'The user Seralynnette Nduta has been successfully added')
+    def test_returns_error_when_user_exists(self):
+        add_person('Jamleck', 'Opondo', 'S')
+        self.assertEquals(add_person(
+            'Jamleck', 'Opondo', 'S'), 'Already exists!')
 
     def test_rooms_increase_by_one_on_creation(self):
         before = len(rooms['offices'])
