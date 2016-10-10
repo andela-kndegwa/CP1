@@ -240,14 +240,3 @@ def reallocate_room(person_id, room_type):
             msg += 'New living space allocated is %s' % allocation[person_id]
             return msg
     return allocations
-
-
-create_room('o', 'Narnia', 'Krypton', 'Oculus', 'Valhalla', 'Catherines')
-create_room('o', 'kirintaga', 'baringo', 'tana', 'serengeti', 'marsabit')
-create_room('l', 'kiambu', 'naromoru', 'mai mahiu', 'timau', 'sinyerere')
-add_person('Calvin', 'Njagi', 'Fellow')
-add_person('Njue', 'Michael', 'staff')
-add_person('Eugene', 'Mutai', 'fellow', 'y')
-allocate_room('F2', 'L')
-print(allocations)
-print(people_stats)
