@@ -240,7 +240,7 @@ def reallocate_room(person_id, room_type):
     for room in range(len(all_rooms)):
         if person_id not in all_rooms[room]['occupants']:
             msg = 'A person needs to be allocated a room '
-            msg +='before reallocation can take place.'
+            msg += 'before reallocation can take place.'
             return msg
     if bool(person_id.startswith('S')) is False and \
             bool(person_id.startswith('F')) is False:
@@ -262,21 +262,42 @@ def reallocate_room(person_id, room_type):
         new_room = offices[randint(0, (len(offices) - 1))]
         for i in range(len(all_rooms)):
             if all_rooms[i]['room_name'] == new_room and \
-            len(all_rooms[i]['occupants']) == 6:
-            return 'Maximum capacity reached'
+                    len(all_rooms[i]['occupants']) == 6:
+                return 'Maximum capacity reached'
         else:
             while curr_allocated == new_room:
-                allocations[person_id] = offices[randint(0, (len(offices) - 1))]
-                
-
-
+                allocations[person_id] = offices[
+                    randint(0, (len(offices) - 1))]
+            for r in range(len(all_rooms)):
+                if all_rooms[r]['room_name'] == new_room:
+                    all_rooms[r]['occupants'].append(person_id)
+                else:
+                    break
+    elif room_type == 'L':
+        new_room = living_spaces[randint(0, (len(offices) - 1))]
+        for i in range(len(all_rooms)):
+            if all_rooms[i]['room_name'] == new_room and \
+                    len(all_rooms[i]['occupants']) == 6:
+                return 'Maximum capacity reached'
+        else:
+            while curr_allocated == new_room:
+                allocations[person_id] = living_spaces[
+                    randint(0, (len(offices) - 1))]
+            for r in range(len(all_rooms)):
+                if all_rooms[r]['room_name'] == new_room:
+                    all_rooms[r]['occupants'].append(person_id)
+                else:
+                    break
+    return allocations
 
 
 create_room('o', 'Oculus', 'Krypton', 'Narnia')
 add_person('KImani', 'Ndegwa', 'Fellow', 'y')
 add_person('KIm', 'Nd', 'Fellow', 'y')
 add_person('Kama', 'Nd', 'Staff')
-print(allocate_room('f1', 'o'))
-print(reallocate_room('f6', 'o'))
+print(allocate_room('f2', 'o'))
+#print(allocate_room('f2', 'o'))
+#print(reallocate_room('f2', 'o'))
+#print(allocate_room('f2', 'o'))
 print(all_rooms)
 print(allocations)
