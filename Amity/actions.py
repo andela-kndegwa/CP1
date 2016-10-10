@@ -25,6 +25,8 @@ s_ids = [0]
 
 allocations = []
 
+all_rooms = []
+
 
 def create_room(room_type, *args):
     '''
@@ -43,13 +45,27 @@ def create_room(room_type, *args):
         if type(arg.strip()) != str:
             return 'Error. Room names must be words.'
     try:
+
         if room_type not in ['O', 'L']:
             return 'Invalid Room Type entered'
         for room in args:
             if room_type == 'O':
                 offices.append(room.title())
+                single_room = {}
+                single_room['room_name'] = room
+                single_room['room_type'] = 'office'
+                single_room['room_capacity'] = 6
+                single_room['occupants'] = []
+                all_rooms.append(single_room)
             elif room_type == 'L':
                 living_spaces.append(room.title())
+                single_room = {}
+                single_room['room_name'] = room
+                single_room['room_type'] = 'living space'
+                single_room['room_capacity'] = 4
+                single_room['occupants'] = []
+                all_rooms.append(single_room)
+        return rooms
     except Exception:
         return 'An error occurred in the command'
 
@@ -82,11 +98,10 @@ def add_person(first_name, last_name, person_type, wants_accomodation='N'):
     # Person stats holds the specific person details to
     # be appended to a list --> people_stats
     # people_stats is a list of dictionaries for each person_stats
-
-    person_stats['full_name'] = first_name + ' ' + last_name
-    person_stats['person_type'] = person_type.title()
-    person_stats['wants_accomodation'] = wants_accomodation.upper()
     full_name = first_name + ' ' + last_name
+    person_stats['full_name'] = full_name
+    person_stats['person_type'] = person_type
+    person_stats['wants_accomodation'] = wants_accomodation.upper()
 
     '''
     After assigining person_stats['person_type'], we
@@ -98,7 +113,7 @@ def add_person(first_name, last_name, person_type, wants_accomodation='N'):
                 f_id = 1
                 f_ids.append(f_id)
                 person_stats['person_id'] = 'F' + str(f_id)
-            elif person_stats['person_type' == 'Staff']:
+            elif person_stats['person_type'] == 'Staff':
                 s_id = 1
                 s_ids.append(s_id)
                 person_stats['person_id'] = 'S' + str(s_id)
@@ -106,7 +121,6 @@ def add_person(first_name, last_name, person_type, wants_accomodation='N'):
             '''
             Check first if person exists.
             '''
-            full_name = first_name + ' ' + last_name
             for person in people_stats:
                 if full_name == person['full_name']:
                     return 'Already exists!'
@@ -119,13 +133,11 @@ def add_person(first_name, last_name, person_type, wants_accomodation='N'):
                 person_stats['person_id'] = 'S' + str(s_id)
                 s_ids.append(s_id)
         people_stats.append(person_stats)
-        if person_type.title() == 'Fellow':
+        if person_type == 'Fellow':
             fellows.append(full_name)
-            people['fellows'].append(full_name)
-        elif person_type.title() == 'Staff':
+        elif person_type == 'Staff':
             staff.append(full_name)
-            people['staff'].append(full_name)
-        return 'The user %s has been successfully added' % full_name
+        return people_stats
     except Exception:
         return 'Oops! An error occurred.'
 
@@ -145,6 +157,8 @@ def get_room_type(room):
 def allocate_room(person_id, room_type):
     # Validation checks
     # If type entered is not string return msg
+    if bool(people_stats) is False or bool(people) is False:
+        return 'Please add people to allocate rooms to.'
     if type(person_id) != str and type(room_type) != str:
         msg = 'Please enter ID in the format '
         msg += '<person_type_initial><number> '
@@ -177,6 +191,12 @@ def allocate_room(person_id, room_type):
         single_allocation[person_id] = offices[
             randint(0, (len(offices) - 1))]
         allocations.append(single_allocation)
+        for room in range(len(all_rooms)):
+            if single_allocation[person_id] == all_rooms[room]['room_name']:
+                if len(all_rooms[room]['occupants']) < 6:
+                    all_rooms[room]['occupants'].append(person_id)
+                else:
+                    return 'Maximum capacity reached'
     elif person_id.startswith('F'):
         for identifier in range(len(get_ids)):
             if people_stats[identifier]['person_id'] == person_id:
@@ -187,10 +207,24 @@ def allocate_room(person_id, room_type):
                         single_allocation[person_id] = living_spaces[
                             randint(0, (len(living_spaces) - 1))]
                         allocations.append(single_allocation)
+                        for room in range(len(all_rooms)):
+                            if single_allocation[person_id] == all_rooms[room]['room_name']:
+                                if len(all_rooms[room]['occupants']) < 4:
+                                    all_rooms[room][
+                                        'occupants'].append(person_id)
+                                else:
+                                    return 'Maximum capacity reached.'
                     elif room_type == 'O':
                         single_allocation[person_id] = offices[
                             randint(0, (len(offices) - 1))]
                         allocations.append(single_allocation)
+                        for room in range(len(all_rooms)):
+                            if single_allocation[person_id] == all_rooms[room]['room_name']:
+                                if len(all_rooms[room]['occupants']) < 6:
+                                    all_rooms[room][
+                                        'occupants'].append(person_id)
+                                else:
+                                    return 'Maximum capacity reached'
     return allocations
 
 
@@ -203,6 +237,11 @@ def reallocate_room(person_id, room_type):
         return msg
     person_id = person_id.upper()
     room_type = room_type.upper()
+    for room in range(len(all_rooms)):
+        if person_id not in all_rooms[room]['occupants']:
+            msg = 'A person needs to be allocated a room '
+            msg +='before reallocation can take place.'
+            return msg
     if bool(person_id.startswith('S')) is False and \
             bool(person_id.startswith('F')) is False:
         msg = 'Error. Please enter correct format as '
@@ -214,29 +253,30 @@ def reallocate_room(person_id, room_type):
         msg = 'A staff member cannot be allocated '
         msg += 'or reallocated a living space.'
         return msg
-    for allocation in allocations:
-        if allocation[person_id] and allocation[person_id]\
-                in rooms['offices'] and room_type == 'O':
-            msg = 'Person ID %s was formerly allocated ' % person_id
-            msg += 'to the office %s. \n' % allocation[person_id]
-            prev_room = allocation[person_id]
-            allocation[person_id] = offices[randint(0, (len(offices) - 1))]
-            new_room = allocation[person_id]
-            while prev_room == new_room:
-                allocation[person_id] = offices[randint(0, (len(offices) - 1))]
-            msg += 'New office allocated is %s' % allocation[person_id]
-            return msg
-        elif allocation[person_id] and allocation[person_id] \
-                in rooms['livingSpaces'] and room_type == 'L':
-            msg = 'Person ID %s was formerly allocated ' % person_id
-            msg += 'to the living space %s \n' % allocation[person_id]
-            prev_room = allocation[person_id]
-            allocation[person_id] = living_spaces[
-                randint(0, (len(living_spaces) - 1))]
-            new_room = allocation[person_id]
-            while prev_room == new_room:
-                allocation[person_id] = living_spaces[
-                    randint(0, (len(living_spaces) - 1))]
-            msg += 'New living space allocated is %s' % allocation[person_id]
-            return msg
-    return allocations
+    curr_allocated = allocations[person_id]
+    for room in range(len(all_rooms)):
+        if curr_allocated in all_rooms[room]['occupants']:
+            all_rooms[room]['occupants'].remove(person_id)
+    del allocations[person_id]
+    if room_type == 'O':
+        new_room = offices[randint(0, (len(offices) - 1))]
+        for i in range(len(all_rooms)):
+            if all_rooms[i]['room_name'] == new_room and \
+            len(all_rooms[i]['occupants']) == 6:
+            return 'Maximum capacity reached'
+        else:
+            while curr_allocated == new_room:
+                allocations[person_id] = offices[randint(0, (len(offices) - 1))]
+                
+
+
+
+
+create_room('o', 'Oculus', 'Krypton', 'Narnia')
+add_person('KImani', 'Ndegwa', 'Fellow', 'y')
+add_person('KIm', 'Nd', 'Fellow', 'y')
+add_person('Kama', 'Nd', 'Staff')
+print(allocate_room('f1', 'o'))
+print(reallocate_room('f6', 'o'))
+print(all_rooms)
+print(allocations)
