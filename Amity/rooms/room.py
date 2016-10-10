@@ -1,5 +1,6 @@
 from room_actions import create_room
 
+
 class Room(object):
     """
     This class models both the Living Space and Office
@@ -11,11 +12,13 @@ class Room(object):
     """
 
     def __init__(self):
+
         pass
 
     def create_room(self, *args):
-        
 
-
-
-
+        self.room_name = ''
+        self.room_type = ''
+        self.occupants = []
+        self.offices = []
+        self.living_spaces = []
