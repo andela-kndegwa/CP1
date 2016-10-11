@@ -7,10 +7,11 @@ class Staff(Person):
     class meaning it inherits characteristics such as
     'name' and 'p_id'.
     """
-    wants_accomodation = False
-
-    def get_all_staff(self):
+    def __init__(self):
         pass
 
-    def get_office_allocated(self):
-            pass
+
+s = Staff()
+s.add_person('Samuel', 'Gaamuwa', 'Staff')
+
+

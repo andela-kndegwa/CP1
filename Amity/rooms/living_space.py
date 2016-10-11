@@ -8,6 +8,10 @@ class LivingSpace(Room):
     """
     roomCapacity = 4
 
-    def get_occupants(self):
-        pass
+
+
+
+room = LivingSpace()
+room.create_room('o', 'krew', 'ewwe', 'reew')
+print(room.all_rooms)
 
