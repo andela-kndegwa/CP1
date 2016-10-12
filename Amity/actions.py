@@ -90,6 +90,8 @@ def add_person(first_name, last_name, person_type, wants_accomodation='N'):
     if wants_accomodation.upper() not in ['Y', 'N']:
         return 'Please enter either Y for Yes or N for No.'
         # Y -- > Yes or N --> No.
+    if bool(offices) is False or bool(living_spaces) is False:
+        return 'Please add a '
 
     if person_type == 'Staff' and wants_accomodation == 'Y':
         return 'A staff cannot be allocated a living space.'
@@ -291,13 +293,4 @@ def reallocate_room(person_id, room_type):
     return allocations
 
 
-create_room('o', 'Oculus', 'Krypton', 'Narnia')
-add_person('KImani', 'Ndegwa', 'Fellow', 'y')
-add_person('KIm', 'Nd', 'Fellow', 'y')
-add_person('Kama', 'Nd', 'Staff')
-print(allocate_room('f2', 'o'))
-#print(allocate_room('f2', 'o'))
-#print(reallocate_room('f2', 'o'))
-#print(allocate_room('f2', 'o'))
-print(all_rooms)
-print(allocations)
+
