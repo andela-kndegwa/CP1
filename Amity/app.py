@@ -1,7 +1,8 @@
 """
+TIA
 Usage:
     create_room (L|O) <room_name>...
-    add_person <first_name> <last_name> (F|S) [<wants_space>]
+    add_person <name> <person_type> <wants_accommodation>
     reallocate_person <employee_id> <new_room_name>
     load_people <filename>
     print_allocations [--o=filename.txt]
@@ -16,10 +17,12 @@ Options:
 """
 import cmd
 from docopt import docopt, DocoptExit
-from Amity.ui import enter_amity
+from ui import enter_amity
+from amity import Amity
+import click
 
 
-def args_cmd(func):
+def parse(func):
     """
     Essentially a decorator that simplifies the try/except block relays result
     of the docopt parsing to the called action.
@@ -51,28 +54,43 @@ def args_cmd(func):
 
 
 def start():
-    enter_amity()
+    # enter_amity()
     arguments = __doc__
     print(arguments)
+
+
+amity = Amity()
 
 
 class Interactive_Amity(cmd.Cmd):
 
     prompt = '(amity)===>'
 
-    @args_cmd
-    def do_create_room(self):
+    @parse
+    def do_create_room(self, args):
         """Usage: create_room <room_type> <room_name>..."""
-        print("This will create a room.")
+        for r in args['<room_name>']:
+            click.secho(amity.create_room(args['<room_type>'], r), fg='red')
 
-    @args_cmd
-    def do_(self):
-        print("This will add a person")
+    @parse
+    def do_add_person(self, args):
+        """Usage: add_person <person_name> <person_type> <wants_accommodation>"""
+        click.echo(amity.add_person(args['<person_name>'], args[
+            '<person_type>'], args['<wants_accommodation>']))
+
+    @parse
+    def do_reallocate_person(self, args):
+        """Usage: reallocate_person <person_id> <room_name>"""
+
+    @parse
+    def do_print_allocations(self, args):
+        """Usage: print_allocations """
+        click.secho(amity.print_allocations())
 
 
-try:
-    if __name__ == '__main__':
+if __name__ == '__main__':
+    try:
         start()
         Interactive_Amity().cmdloop()
-except KeyboardInterrupt:
-    print('Amity says Goodbye!')
+    except KeyboardInterrupt:
+        print('Amity says Goodbye!')
