@@ -2,6 +2,7 @@ import click
 from random import randint
 from rooms.room import LivingSpace, Office
 from people.person import Fellow, Staff
+from rooms.room import LivingSpace, Office
 
 
 class Amity(object):
@@ -200,3 +201,4 @@ print(amity.people_stats)
 print(amity.staff_allocations)
 print(amity.fellow_allocations)
 # amity.print_allocations()
+

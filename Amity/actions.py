@@ -91,6 +91,7 @@ def add_person(first_name, last_name, person_type, wants_accomodation='N'):
         return 'Please enter either Y for Yes or N for No.'
         # Y -- > Yes or N --> No.
     if bool(offices) is False and bool(living_spaces) is False:
+
         return 'Please add a '
 
     if person_type == 'Staff' and wants_accomodation == 'Y':
@@ -294,8 +295,11 @@ def reallocate_room(person_id, room_type):
 
 
 
+<<<<<<< HEAD
 create_room('O', 'kRYPTON', 'oCULY')
 print(rooms)
 add_person('kimani','ndegwa', 'Fellow')
 print(allocate_room('F1', 'O'))
 print(allocations)
+=======
+>>>>>>> af7e76160ec0b36c03fad1cbc98230c89bee7251
