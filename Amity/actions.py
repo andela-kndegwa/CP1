@@ -92,7 +92,7 @@ def add_person(first_name, last_name, person_type, wants_accomodation='N'):
         # Y -- > Yes or N --> No.
     if bool(offices) is False and bool(living_spaces) is False:
 
-        return 'Please add a '
+        return 'Please add an office or living space '
 
     if person_type == 'Staff' and wants_accomodation == 'Y':
         return 'A staff cannot be allocated a living space.'
@@ -124,9 +124,6 @@ def add_person(first_name, last_name, person_type, wants_accomodation='N'):
             '''
             Check first if person exists.
             '''
-            for person in people_stats:
-                if full_name == person['full_name']:
-                    return 'Already exists!'
             if person_stats['person_type'] == 'Fellow':
                 f_id = f_ids.pop() + 1
                 person_stats['person_id'] = 'F' + str(f_id)
@@ -294,12 +291,10 @@ def reallocate_room(person_id, room_type):
     return allocations
 
 
+create_room('O', 'kRYPTON', 'OCULUS')
+add_person('Edward', 'Karanja', 'Fellow')
+add_person('Edward', 'Karanja', 'Staff')
+add_person('Kimani', 'ndegwa', 'Fellow', 'Y')
 
-<<<<<<< HEAD
-create_room('O', 'kRYPTON', 'oCULY')
-print(rooms)
-add_person('kimani','ndegwa', 'Fellow')
-print(allocate_room('F1', 'O'))
-print(allocations)
-=======
->>>>>>> af7e76160ec0b36c03fad1cbc98230c89bee7251
+print(all_rooms)
+print(people_stats)

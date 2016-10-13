@@ -2,11 +2,8 @@
 TIA
 Usage:
     create_room (L|O) <room_name>...
-<<<<<<< HEAD
     add_person <name> <person_type> <wants_accommodation>
-=======
     add_person <first_name> <last_name> (F|S) [<wants_space>]
->>>>>>> af7e76160ec0b36c03fad1cbc98230c89bee7251
     reallocate_person <employee_id> <new_room_name>
     load_people <filename>
     print_allocations [--o=filename.txt]
@@ -23,19 +20,13 @@ import cmd
 from docopt import docopt, DocoptExit
 from ui import enter_amity
 from amity import Amity
-<< << << < HEAD
 import click
-
-
-def parse(func):
-== == == =
 
 
 amity = Amity()
 
 
-def docopt_cmd(func):
->>>>>> > af7e76160ec0b36c03fad1cbc98230c89bee7251
+def parse(func):
     """
     Essentially a decorator that simplifies the try/except block relays result
     of the docopt parsing to the called action.
@@ -79,19 +70,30 @@ amity = Amity()
 
 class Interactive_Amity(cmd.Cmd):
 
-    prompt = '(amity)===>'
+    prompt = '(amity)===> '
 
     @parse
     def do_create_room(self, args):
-        """Usage: create_room <room_type> <room_name>..."""
-        for r in args['<room_name>']:
-            click.secho(amity.create_room(args['<room_type>'], r), fg='red')
+        """Usage: create_room <room_type> <room_name>...
+        """
+        try:
+            for r in args['<room_name>']:
+                amity.create_room(args['<room_type>'], r)
+        except Exception:
+            click.secho(
+                'Oops!An error occurred in running the command. Please try again',
+                fg='red', bold=True)
 
     @parse
     def do_add_person(self, args):
-        """Usage: add_person <person_name> <person_type> <wants_accommodation>"""
-        click.echo(amity.add_person(args['<person_name>'], args[
-            '<person_type>'], args['<wants_accommodation>']))
+        """Usage: add_person <first_name> <other_name> <person_type> <wants_accommodation>"""
+        try:
+            amity.add_person(args['<first_name>'], args['<other_name>'], args[
+                '<person_type>'], args['<wants_accommodation>'])
+        except Exception as e:
+            print(e)
+            click.secho(
+                'Oops!An error occurred in running the command. Please try again', fg='red', bold=True)
 
     @parse
     def do_reallocate_person(self, args):
@@ -100,17 +102,12 @@ class Interactive_Amity(cmd.Cmd):
     @parse
     def do_print_allocations(self, args):
         """Usage: print_allocations """
-        click.secho(amity.print_allocations())
+        amity.print_allocations()
 
-    @docopt_cmd
-    def do_create_room(self, args):
-        """Usage: create_room <room_type> <room_name>..."""
-        for r in args['<room_name>']:
-            print(amity.create_room(args['<room_type>'], r))
-
-    @docopt_cmd
-    def do_(self):
-        print("This will add a person")
+    @parse
+    def do_print_room(self, args):
+        """Usage: print_room <room_name>"""
+        amity.print_room(args["<room_name>"])
 
 
 if __name__ == '__main__':
