@@ -38,12 +38,18 @@ There is also the need to have a way of determing how many people are at a parti
 #2. Commands.
 
 >create_room (L|O) <room_name>...
+
 >add_person <first_name> <last_name> <person_type> <wants_space>
+
 >reallocate_person <identifier> <new_room_name>
+
 >load_people <filename>
+
 >print_allocations
+
 >print_unallocated
->print_room <room_nam
+
+>print_room <room_name>
 
 #3. Installation and set up.
 
