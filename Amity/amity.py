@@ -34,7 +34,6 @@ class Amity(object):
         self.staff_allocations = []
         self.fellow_allocations = []
 
-
     def create_room(self, room_type, room_name):
         '''
         The create_room method in the amity class takes
@@ -246,7 +245,6 @@ class Amity(object):
             if room.room_name == room_name and room.capacity > 0:
                 room.capacity = room.add_person(person_name)
                 click.secho('%s has been reallocated from %s to %s.' %
-                        (person_name, current_room, room.room_name),
-                        fg='green', bold=True)
+                            (person_name, current_room, room.room_name),
+                            fg='green', bold=True)
                 return 'Person reallocated tp %s' % room_name
-
