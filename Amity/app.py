@@ -87,13 +87,13 @@ class Interactive_Amity(cmd.Cmd):
     @parse
     def do_add_person(self, args):
         """Usage: add_person <first_name> <other_name> <person_type> <wants_accommodation>"""
-        try:
-            amity.add_person(args['<first_name>'], args['<other_name>'], args[
-                '<person_type>'], args['<wants_accommodation>'])
-        except Exception as e:
-            print(e)
-            click.secho(
-                'Oops!An error occurred in running the command. Please try again', fg='red', bold=True)
+        # try:
+        #     amity.add_person(args['<first_name>'], args['<other_name>'], args[
+        #         '<person_type>'], args['<wants_accommodation>'])
+        # except Exception as e:
+        #     print(e)
+        #     click.secho(
+        #         'Oops!An error occurred in running the command. Please try again', fg='red', bold=True)
 
     @parse
     def do_reallocate_person(self, args):
