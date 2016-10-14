@@ -98,6 +98,7 @@ class Interactive_Amity(cmd.Cmd):
     @parse
     def do_reallocate_person(self, args):
         """Usage: reallocate_person <person_id> <room_name>"""
+        amity.reallocate_person(args['<person_id>'], args['<room_name>'])
 
     @parse
     def do_print_allocations(self, args):

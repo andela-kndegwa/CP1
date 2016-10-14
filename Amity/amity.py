@@ -173,7 +173,7 @@ class Amity(object):
                 person = Staff(first_name, other_name)
                 person.get_full_name()
                 s_id = self.s_ids.pop() + 1
-                identifier = 'F' + str(s_id)
+                identifier = 'S' + str(s_id)
                 self.s_ids.append(s_id)
                 person.assign_identifier(identifier)
                 self.fellows.append(person.full_name)
@@ -216,14 +216,16 @@ class Amity(object):
                             self.offices['unavailable'].append(room.room_name)
                     elif room.room_name == fellow_single_allocation['living_space']:
                         if room.capacity > 0:
-                                room.capacity = room.add_person(person.full_name)
+                            room.capacity = room.add_person(person.full_name)
                         else:
-                            self.living_spaces['available'].remove(room.room_name)
-                            self.living_spaces['unavailable'].append(room.room_name)
+                            self.living_spaces[
+                                'available'].remove(room.room_name)
+                            self.living_spaces[
+                                'unavailable'].append(room.room_name)
             else:
                 fellow_single_allocation = {}
                 fellow_single_allocation[person.full_name] = self.offices['available'][
-                randint(0, (len(self.offices['available']) - 1))]
+                    randint(0, (len(self.offices['available']) - 1))]
                 self.fellow_allocations.append(fellow_single_allocation)
                 for room in self.rooms:
                     if room.room_name == fellow_single_allocation[person.full_name]:
@@ -233,70 +235,42 @@ class Amity(object):
                             self.offices['available'].remove(room.room_name)
                             self.offices['unavailable'].append(room.room_name)
 
+    def reallocate_person(self, person_id, room_name):
+        if type(room_name) != str:
+            return 'Error. Please enter valid room name.'
+        person_id = person_id.upper()
+        room_name = room_name.title()
+        all_person_ids = []
+        for person in self.people:
+            all_person_ids.append(person.identifier)
+            if person.identifier == person_id:
+                person_name = person.full_name
+        if person_id not in all_person_ids:
+            click.secho('Person ID entered does not exist.',
+                        fg='red', bold=True)
+            return "Invalid person  type."
+        for room in self.rooms:
+            if person_name in room.occupants:
+                current_room = room.room_name
+                room.occupants.remove(person_name)
 
-    # def allocate_room(self, person_name, person_type, accomodate=False):
-    #     if not self.offices:
-    #         return 'Please add an office'
-    #     for room in self.all_rooms:
-    #         if len(room['occupants']) == 4:
-    #             self.offices['unavailable'].append(room)
-    #             return 'Unavailable room.'
-    #     for
-
-    # def reallocate_person(self, person_id, room_name):
-    #     if type(room_name) != str:
-    #         return 'Error. Please enter valid room name.'
-
-    #     people_ids = []
-    #     for p in range(len(self.people_stats)):
-    #         if self.people_stats[p]['person_id']:
-    #             people_ids.append(self.people_stats[p]['person_id'])
-    #     if person_id not in people_ids:
-    #         return 'Error. The person you entered does not exist in our system.'
-    #     amity_rooms = []
-    #     for office in self.offices:
-    #         amity_rooms.append(office)
-    #     for living_space in self.living_spaces:
-    #         amity_rooms.append(living_space)
-    #     if room_name not in amity_rooms:
-    # return 'Error. The room name you entered does not exist on our system.'
-
-    #     # find out first where a person is allocated
-    #     # remove them from that list / dictionary
-    #     # reallocate them as need be
-    #     for p in range(len(self.people_stats)):
-    #         if self.people_stats[p]['person_id'] == person_id:
-    #             found_name_in_old_room = self.people_stats[p]['name']
-    #             for r in range(len(self.all_rooms)):
-    #                 if found_name_in_old_room in self.all_rooms[r]['occupants']:
-    #                     self.all_rooms[r]['occupants'].remove(
-    #                         found_name_in_old_room)
-    #                 if room_name == self.all_rooms[r]['room_name']:
-    #                     self.all_rooms[r]['occupants'].append(
-    #                         found_name_in_old_room)
-    # return 'Success! %s has been reallocated to %s ' %
-    # (found_name_in_old_room.title(), room_name)
-
-    #         # except Exception as e:
-    #         #     print(e)
-    #         #     return 'An error occurred'
-    # def print_room(self, room_name):
-    #     for r in range(len(self.all_rooms)):
-    #         if self.all_rooms[r]['room_name'] == room_name:
-    #             click.secho('Room Name : %s\n ' % room_name, fg='yellow')
-    #             if self.all_rooms[r]['occupants']:
-    #                 for occupant in self.all_rooms[r]['occupants']:
-    #                     click.secho('=' * 10, fg='cyan')
-    #                     click.secho(occupant)
-    #             else:
-    #                 click.secho(
-    #                     'There are no occupants in this room as per now.', fg='yellow')
-
+        # Reallocate to actual room
+        for room in self.rooms:
+            if room.room_name == room_name and room.capacity > 0:
+                room.capacity = room.add_person(person_name)
+                click.secho('%s has been reallocated from %s to %s.' %
+                        (person_name, current_room, room.room_name),
+                        fg='green', bold=True)
+                return 'Person reallocated tp %s' % room_name
 
 # amity = Amity()
-# amity.create_room('o', 'Swift')
-# amity.create_room('o', 'oculus')
-# amity.create_room('o', 'krypton')
-# amity.add_person('Kimani', 'nDEGWA', 'Fellow', 'N')
+# amity.create_room('o', 'Oculus')
+# amity.create_room('o', 'MODOR')
+# amity.add_person('Kimani', 'Ndegwa', 'Fellow')
+# amity.add_person('eDWARD', 'KARANJA', 'Fellow')
+# amity.add_person('eDWARD', 'KARANJA', 'STAFF')
 # amity.print_allocations()
-# print(amity.offices)
+# print(amity.people)
+# for p in amity.people:
+#     print(p.identifier)
+# amity.reallocate_person('F1', 'Modor')
