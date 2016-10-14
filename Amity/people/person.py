@@ -1,19 +1,37 @@
 class Person(object):
-    def __init__(self, person_type=None):
-        self.person_type = person_type
+    '''
+    The Person class models the rooms in Amity and
+    is used as the blueprint for how the LivingSpace
+    and OfficeSpace classes inehrit properties such
+    as room_name,room_type and capacity.s
+    '''
 
-    def get_person_type(self):
-        return 'Person type is %s' % self.person_type
+    def __init__(self, first_name, last_name, person_type):
+        self.first_name = first_name.strip().title()
+        self.last_name = last_name.strip().title()
+        self.person_type = person_type.strip().title()
+        self.accomodate = 'N'
 
+    def get_full_name(self):
+        full_name = self.first_name + ' ' + self.last_name
+        self.full_name = full_name
 
-
-class Staff(Person):
-    def __init__(self):
-        super(Staff, self).__init__(person_type='Staff')
+    def assign_identifier(self, identifier):
+        self.identifier = identifier
 
 
 class Fellow(Person):
-    def __init__(self):
-        super(Fellow, self).__init__(person_type='Fellow')
+    def __init__(self, first_name, last_name):
+        super(Fellow, self).__init__(
+                                     first_name, last_name, person_type='Fellow')
 
 
+class Staff(Person):
+    def __init__(self, first_name, last_name):
+        super(Staff, self).__init__(
+                                    first_name, last_name, person_type='Staff')
+
+
+
+person = Fellow('Kimani', 'Ndegwa')
+print(person)

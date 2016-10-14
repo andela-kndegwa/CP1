@@ -79,7 +79,8 @@ class Interactive_Amity(cmd.Cmd):
         try:
             for r in args['<room_name>']:
                 amity.create_room(args['<room_type>'], r)
-        except Exception:
+        except Exception as e:
+            print(e)
             click.secho(
                 'Oops!An error occurred in running the command. Please try again',
                 fg='red', bold=True)
@@ -88,10 +89,9 @@ class Interactive_Amity(cmd.Cmd):
     def do_add_person(self, args):
         """Usage: add_person <first_name> <other_name> <person_type> <wants_accommodation>"""
         # try:
-        #     amity.add_person(args['<first_name>'], args['<other_name>'], args[
-        #         '<person_type>'], args['<wants_accommodation>'])
-        # except Exception as e:
-        #     print(e)
+        amity.add_person(args['<first_name>'], args['<other_name>'], args[
+            '<person_type>'], args['<wants_accommodation>'])
+        # except Exception:
         #     click.secho(
         #         'Oops!An error occurred in running the command. Please try again', fg='red', bold=True)
 

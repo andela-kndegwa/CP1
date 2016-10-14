@@ -19,7 +19,7 @@ class Room(object):
         '''
         self.occupants.append(person)
         self.capacity = self.capacity - 1
-        return 'Person added.'
+        return self.capacity
 
 
 class LivingSpace(Room):
@@ -31,5 +31,3 @@ class LivingSpace(Room):
 class Office(Room):
     def __init__(self, room_name):
         super(Office, self).__init__(room_name, room_type='Office', capacity=6)
-
-
