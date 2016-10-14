@@ -37,11 +37,48 @@ There is also the need to have a way of determing how many people are at a parti
 
 #2. Commands.
 
-Command| Argument| Explanation|Example
---- | --- | ---
-|`create_room`| room_type room_name | Creates a particular type with the room name(s) specified after the room_type initial | create_room o oculus
-|`add_person`| `<path_to_quiz_JSON>` | Import a new quiz from a JSON file
-|`quiz take` | `<quiz_name>`| Start taking a new quiz
+>create_room (L|O) <room_name>...
+>add_person <first_name> <last_name> <person_type> <wants_space>
+>reallocate_person <identifier> <new_room_name>
+>load_people <filename>
+>print_allocations
+>print_unallocated
+>print_room <room_nam
+
 #3. Installation and set up.
-#4. Resources.
-#5. License.
+
+1. First clone this repository to your local machine using `git clone https://github.com/andela-kndegwa/CP1.git`
+
+2. Checkout into the **staging** branch using 'git checkout staging'
+
+3. Create a virtualenv on your machine and install the dependencies via `pip install -r requirements.txt`
+
+4. Navigate into the Amity folder and run `python app.py`
+
+## Credits
+
+[Kimani Ndegwa](https://github.com/andela-kndegwa)
+
+## License
+
+### The MIT License (MIT)
+
+Copyright (c) 2016 Kimani Ndegwa.
+
+> Permission is hereby granted, free of charge, to any person obtaining a copy
+> of this software and associated documentation files (the "Software"), to deal
+> in the Software without restriction, including without limitation the rights
+> to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+> copies of the Software, and to permit persons to whom the Software is
+> furnished to do so, subject to the following conditions:
+>
+> The above copyright notice and this permission notice shall be included in
+> all copies or substantial portions of the Software.
+>
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+> AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+> OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+> THE SOFTWARE.
