@@ -1,7 +1,5 @@
 import unittest
-from People.person import Person
-from People.staff import Staff
-from People.fellow import Fellow
+from ..people.person import Fellow, Person, Staff
 
 
 class TestPersonFunctionality(unittest.TestCase):

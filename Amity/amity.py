@@ -33,6 +33,7 @@ class Amity(object):
         # # Regarding allocations
         self.staff_allocations = []
         self.fellow_allocations = []
+        self.unallocated_persons = []
 
     def create_room(self, room_type, room_name):
         '''
@@ -48,6 +49,11 @@ class Amity(object):
             click.secho('Error.Please enter O or L for a room type.',
                         bold=True, fg='red')
             return 'Error. Invalid room type initial.'
+        for room in self.rooms:
+            if room.room_name.title() == room_name.title():
+                click.secho('%s ALREADY EXISTS.Please pick another name.' % room_name.title(),
+                            fg='red', bold=True)
+                return 'Room already exists.'
         room_type = room_type.strip().title()
         room_name = room_name.strip().title()
         if room_type.upper() == 'O':
@@ -73,8 +79,9 @@ class Amity(object):
                         fg='red', bold=True)
             return 'Error. No rooms within system.'
         for room in self.rooms:
+            click.secho('==' * 30, fg='cyan')
             click.secho(room.room_name, fg='cyan')
-            click.secho('==' * 10, fg='cyan')
+            click.secho('==' * 30, fg='cyan')
             if room.occupants:
                 for occupant in room.occupants:
                     click.secho(occupant)
@@ -109,10 +116,16 @@ class Amity(object):
             click.secho(
                 'A Staff member cannot be allocated accomodation.', fg='red', bold=True)
             return 'Staff cannot have wants allocation of Yes.'
+        for person in self.people:
+            full_name = first_name.title() + ' ' + other_name.title()
+            if person.full_name == full_name and person.person_type == person_type.title():
+                click.secho('%s by name %s already exists.Please add someone else.' %
+                            (person_type, full_name), fg='red', bold=True)
+                return 'Person Exists.'
         if accomodate.upper() == 'Y' and person_type == 'Fellow':
             if not self.living_spaces['available']:
                 click.secho(
-                    'Please add a living space for a fellow to be allocated both room types.')
+                    'Please add a living space for a fellow to be allocated both room types.', fg='red', bold=True)
                 return 'No Living space for fellow requiring both.'
             if not self.offices['available']:
                 click.secho(
@@ -164,7 +177,6 @@ class Amity(object):
                     (person.person_type, person.full_name), fg='green', bold=True)
         click.secho('ALLOCATING ROOM ...', fg='cyan')
         time.sleep(2)
-        click.secho('Success!', fg='green')
         # Random room allocation begins here
         if person_type == 'Staff':
             staff_single_allocation = {}
@@ -175,9 +187,15 @@ class Amity(object):
                 if room.room_name == staff_single_allocation[person.full_name]:
                     if room.capacity > 0:
                         room.capacity = room.add_person(person.full_name)
+                        click.secho('Success!', fg='green')
+                        return 'Room allocated.'
                     else:
                         self.offices['available'].remove(room.room_name)
                         self.offices['unavailable'].append(room.room_name)
+                        click.secho(
+                            "CAPACITY reached.Please create another room.", fg='red', bold=True)
+                        self.unallocated_persons.append(person.full_name)
+                        return 'Capacity Reached.'
         if person_type == 'Fellow':
             if accomodate.upper() == 'Y':
                 fellow_single_allocation = {}
@@ -191,17 +209,28 @@ class Amity(object):
                     if room.room_name == fellow_single_allocation['office']:
                         if room.capacity > 0:
                             room.capacity = room.add_person(person.full_name)
+                            click.secho('Success!', fg='green')
+                            return 'Room allocated.'
                         else:
                             self.offices['available'].remove(room.room_name)
                             self.offices['unavailable'].append(room.room_name)
+                            click.secho(
+                                "CAPACITY reached.Please create another room.", fg='red', bold=True)
+                            self.unallocated_persons.append(person.full_name)
+                            return 'CAPACITY reached.'
                     elif room.room_name == fellow_single_allocation['living_space']:
                         if room.capacity > 0:
                             room.capacity = room.add_person(person.full_name)
+                            click.secho('Success!', fg='green')
                         else:
                             self.living_spaces[
                                 'available'].remove(room.room_name)
                             self.living_spaces[
                                 'unavailable'].append(room.room_name)
+                            click.secho(
+                                "CAPACITY reached.Please create another room.", fg='red', bold=True)
+                            self.unallocated_persons.append(person.full_name)
+                            return 'CAPACITY reached.'
             else:
                 fellow_single_allocation = {}
                 fellow_single_allocation[person.full_name] = self.offices['available'][
@@ -211,21 +240,45 @@ class Amity(object):
                     if room.room_name == fellow_single_allocation[person.full_name]:
                         if room.capacity > 0:
                             room.capacity = room.add_person(person.full_name)
+                            click.secho('Success!', fg='green')
+                            click.secho('%s allocated to %s!'
+                                        % (person.full_name, room.room_name), fg='green', bold=True)
+                            return 'Room allocated.'
                         else:
                             self.offices['available'].remove(room.room_name)
                             self.offices['unavailable'].append(room.room_name)
+                            click.secho(
+                                "CAPACITY reached.Please create another room.", fg='red', bold=True)
+                            self.unallocated_persons.append(person.full_name)
+                            return 'Capacity Reached.'
 
     def reallocate_person(self, person_id, room_name):
         '''
         The beginning of the method validates of the data passed
         is a string and then proceeds to take the person_id and
         accordingly reallocate them.
-        PERSON_ID is converted to upper case.
+        PERSON_ID which in this case is the identifier
+        is converted to upper case.
         '''
+        available_rooms = []
         if type(room_name) != str:
             return 'Error. Please enter valid room name.'
+        for room in self.offices['available']:
+            available_rooms.append(room_name.title())
+        for room in self.living_spaces['available']:
+            available_rooms.append(room_name.title())
         person_id = person_id.upper()
         room_name = room_name.title()
+        if room_name.title() not in available_rooms:
+            click.secho('Room name does not exist.',fg='red', bold=True)
+            return 'Room does not exist.'
+        for person in self.people:
+            if person.identifier.startswith('F') and person.accomodate == 'N' and \
+                    person.identifier == person_id:
+                if room_name in self.offices['available']:
+                    click.secho(
+                        'The fellow cannnot be allocated to a living space.', fg='red', bold=True)
+                    return 'Fellow does not want accomodation'
         all_person_ids = []
         for person in self.people:
             all_person_ids.append(person.identifier)
@@ -247,4 +300,48 @@ class Amity(object):
                 click.secho('%s has been reallocated from %s to %s.' %
                             (person_name, current_room, room.room_name),
                             fg='green', bold=True)
-                return 'Person reallocated tp %s' % room_name
+                return 'Person reallocated to %s' % room_name
+
+    def print_room(self, room_name):
+        '''
+        This function gets a room name as an argument and proceeds 
+        to display the results on the occupants of the room if any.
+        '''
+        if not self.rooms:
+            click.secho('THERE ARE NO ROOMS IN THE SYSTEM YET.',
+                        fg='red', bold=True)
+        room_name = room_name.title()
+        for room in self.rooms:
+            if room.room_name == room_name:
+                click.secho('ROOM NAME:%s' % room_name, fg='yellow', bold=True)
+                click.secho('=' * 20, fg='cyan')
+                if room.occupants:
+                    for occupant in room.occupants:
+                        click.secho(occupant, fg='yellow')
+                else:
+                    click.secho('Its lonely here.', fg='cyan', bold=True)
+            else:
+                click.secho('The room %s does not exist on our system.' %
+                            room_name, fg='red', bold=True)
+
+    def print_unallocated(self):
+        '''
+        After Max capacity has been recorded in a particular
+        room, the person is thereafter appended to a the unallocated 
+        persons list.
+        '''
+        if not self.unallocated_persons:
+            click.secho('There are no unallocated people as of now.',
+                        fg='green', bold=True)
+            return 'No unallocated people as per now.'
+        else:
+            click.secho('UNALLOCATED PEOPLE IN MY AMITY.', fg='red', bold=True)
+            for unallocated in self.unallocated_persons:
+                click.secho(unallocated, fg='yellow')
+                return 'Some people unallocated.'
+
+    def save_state():
+        pass
+
+    def load_state():
+        pass

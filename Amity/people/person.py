@@ -23,15 +23,10 @@ class Person(object):
 class Fellow(Person):
     def __init__(self, first_name, last_name):
         super(Fellow, self).__init__(
-                                     first_name, last_name, person_type='Fellow')
+            first_name, last_name, person_type='Fellow')
 
 
 class Staff(Person):
     def __init__(self, first_name, last_name):
         super(Staff, self).__init__(
-                                    first_name, last_name, person_type='Staff')
-
-
-
-person = Fellow('Kimani', 'Ndegwa')
-print(person)
+            first_name, last_name, person_type='Staff')

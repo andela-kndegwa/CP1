@@ -36,6 +36,12 @@ There is also the need to have a way of determing how many people are at a parti
 
 
 #2. Commands.
+
+Command| Argument| Explanation|Example
+--- | --- | ---
+|`create_room`| room_type room_name | Creates a particular type with the room name(s) specified after the room_type initial | create_room o oculus
+|`add_person`| `<path_to_quiz_JSON>` | Import a new quiz from a JSON file
+|`quiz take` | `<quiz_name>`| Start taking a new quiz
 #3. Installation and set up.
 #4. Resources.
 #5. License.
