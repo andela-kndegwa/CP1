@@ -133,18 +133,27 @@ class Interactive_Amity(cmd.Cmd):
                         other_name = person_details[1]
                         person_type = person_details[2]
                         accomodate = "N"
-                        amity.add_person(first_name=first_name, other_name=other_name, person_type=person_type, accomodate=accomodate)
+                        amity.add_person(first_name=first_name, other_name=other_name,
+                                         person_type=person_type, accomodate=accomodate)
                     elif len(person_details) == 4:
                         first_name = person_details[0]
                         other_name = person_details[1]
                         person_type = person_details[2]
                         accomodate = person_details[3]
-                        amity.add_person(first_name=first_name, other_name=other_name, person_type=person_type, accomodate=accomodate)
+                        amity.add_person(first_name=first_name, other_name=other_name,
+                                         person_type=person_type, accomodate=accomodate)
                     else:
                         print("An error occurred")
         else:
-            click.secho('PLEASE PROVIDE A VALID FILE NAME.',fg='red', bold=True)
+            click.secho('PLEASE PROVIDE A VALID FILE NAME.',
+                        fg='red', bold=True)
 
+    @parse
+    def do_get_identifier(self, args):
+        """"Usage: get_identifier <first_name> <last_name> """
+        first_name = args['<first_name>']
+        last_name = args['<last_name>']
+        amity.get_identifier(first_name, last_name)
 
     @parse
     def do_quit(self, args):
