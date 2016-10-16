@@ -115,21 +115,27 @@ class Amity(object):
             click.secho('Please enter Y or N for wants accomodation.',
                         fg='red', bold=True)
             return 'Wants accomodation not Y or N'
-        if person_type.title() == 'Staff' and accomodate.upper() == 'Y':
+        accomodate = accomodate.upper()
+        person_type = person_type.title()
+        if person_type == 'Staff' and accomodate == 'Y':
             click.secho(
-                'A Staff member cannot be allocated accomodation.', fg='red', bold=True)
+                'A Staff member cannot be allocated accomodation.',
+                fg='red', bold=True)
             return 'Staff cannot have wants allocation of Yes.'
         fn = first_name.title() + ' ' + other_name.title()
         for person in self.people:
-            if person.full_name == fn and person.person_type == person_type.title():
+            if person.full_name == fn and \
+                    person.person_type == person_type.title():
                 click.secho('%s %s ALREADY EXISTS.' % (person_type, fn))
                 return 'Person exists.'
-        if not self.living_spaces['available'] and not self.offices['available']:
+        if not self.living_spaces['available'] and not \
+                self.offices['available']:
             click.secho(
-                'THERE ARE NO ROOMS IN THE SYSTEM YET OR ALL ROOMS ARE FULL.', fg='red', bold=True)
+                'THERE ARE NO ROOMS IN THE SYSTEM YET OR ALL ROOMS ARE FULL.',
+                fg='red', bold=True)
             return 'There are no rooms in the system.'
 
-        if accomodate.upper() == 'Y' and person_type.title() == 'Fellow':
+        if accomodate == 'Y' and person_type == 'Fellow':
             if not self.living_spaces['available']:
                 click.secho(
                     'Please add a living space for a fellow to be allocated both room types.', fg='red', bold=True)
@@ -144,7 +150,6 @@ class Amity(object):
             msg += 'This is for purposes of random allocation.'
             click.secho(msg, fg='red')
             return 'No rooms added for random allocation.'
-        person_type = person_type.title()
         if not self.people:
             if person_type == 'Fellow':
                 f_id = 1
@@ -184,11 +189,10 @@ class Amity(object):
                     (person.person_type, person.full_name), fg='green', bold=True)
         click.secho('ALLOCATING ROOM ...', fg='cyan')
         time.sleep(2)
-        click.secho('Success!', fg='green')
         # random allocation
         # only a fellow can be allocated a living space
         # a staff can only be allocated an office.
-        if person_type.title() == 'Staff':
+        if person_type == 'Staff':
             staff_single_allocation = {}
             staff_single_allocation[person.full_name] = self.offices['available'][
                 randint(0, (len(self.offices['available']) - 1))]
@@ -196,17 +200,19 @@ class Amity(object):
             for room in self.rooms:
                 if room.room_name == staff_single_allocation[person.full_name]:
                     if room.capacity > 0:
+                        click.secho('Success!', fg='green')
                         room.capacity = room.add_person(person.full_name)
                         return 'Staff allocated'
                     else:
                         self.offices['available'].remove(room.room_name)
                         self.offices['unavailable'].append(room.room_name)
-                        msg = 'Room has reached its Maximum capacity.'
-                        msg += 'Please add another office.'
+                        self.unallocated_persons.append(person.full_name)
+                        msg = '%s has reached its Maximum capacity.' % room.room_name
+                        msg += 'Please add another %s.' % room.room_type
                         click.secho(msg, fg='red', bold=True)
                         return 'Maximum capacity reached.'
-        if person_type.title() == 'Fellow':
-            if accomodate.upper() == 'Y':
+        if person_type == 'Fellow':
+            if accomodate == 'Y':
                 fellow_single_allocation = {}
                 fellow_single_allocation['name'] = person.full_name
                 fellow_single_allocation['office'] = self.offices['available'][
@@ -217,24 +223,28 @@ class Amity(object):
                 for room in self.rooms:
                     if room.room_name == fellow_single_allocation['office']:
                         if room.capacity > 0:
+                            click.secho('Success!', fg='green')
                             room.capacity = room.add_person(person.full_name)
                         else:
                             self.offices['available'].remove(room.room_name)
                             self.offices['unavailable'].append(room.room_name)
-                            msg = 'Room has reached its Maximum capacity.'
-                            msg += 'Please add another office.'
+                            self.unallocated_persons.append(person.full_name)
+                            msg = '%s has reached its Maximum capacity.' % room.room_name
+                            msg += 'Please add another %s.' % room.room_type
                             click.secho(msg, fg='red', bold=True)
                             return 'Maximum capacity reached.'
                     elif room.room_name == fellow_single_allocation['living_space']:
                         if room.capacity > 0:
+                            click.secho('Success!', fg='green')
                             room.capacity = room.add_person(person.full_name)
                         else:
                             self.living_spaces[
                                 'available'].remove(room.room_name)
                             self.living_spaces[
                                 'unavailable'].append(room.room_name)
-                            msg = 'Room has reached its Maximum capacity.'
-                            msg += 'Please add another office.'
+                            self.unallocated_persons.append(person.full_name)
+                            msg = '%s has reached its Maximum capacity.' % room.room_name
+                            msg += 'Please add another %s.' % room.room_type
                             click.secho(msg, fg='red', bold=True)
                             return 'Maximum capacity reached.'
                 return 'Fellow allocated both living space and office'
@@ -248,13 +258,15 @@ class Amity(object):
                     if room.room_name == \
                             fellow_single_allocation[person.full_name]:
                         if room.capacity > 0:
+                            click.secho('Success!', fg='green')
                             room.capacity = room.add_person(person.full_name)
                             return 'Fellow allocated office only'
                         else:
                             self.offices['available'].remove(room.room_name)
                             self.offices['unavailable'].append(room.room_name)
-                            msg = 'Room has reached its Maximum capacity.'
-                            msg += 'Please add another office.'
+                            self.unallocated_persons.append(person.full_name)
+                            msg = '%s has reached its Maximum capacity.' % room.room_name
+                            msg += 'Please add another %s.' % room.room_type
                             click.secho(msg, fg='red', bold=True)
                             return 'Maximum capacity reached.'
 
@@ -359,5 +371,3 @@ class Amity(object):
 
     def load_state():
         pass
-
-

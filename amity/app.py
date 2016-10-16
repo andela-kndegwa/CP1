@@ -15,6 +15,7 @@ Options:
     -h --help     Show this screen.
     -v --version
 """
+import os
 import click
 import cmd
 from docopt import docopt, DocoptExit
@@ -120,21 +121,41 @@ class Interactive_Amity(cmd.Cmd):
     @parse
     def do_load_people(self, args):
         """Usage: load_people <filename>"""
-        try:
-            with open(args['<filename>'], 'r') as f:
-                file_read = f.readlines()
-            for person in file_read:
-                person = person.split()
-                first_name = person[0].strip()
-                other_name = person[1].strip()
-                person_type = person[2].strip()
-                accomodate = 'N'
-                amity.add_person(first_name, other_name,
-                    person_type, accomodate)
-            click.secho("FINISHED ADDING PEOPLE.", fg='red', bold=True)
-        except Exception as e:
-            print(e)
-            print ("Error while adding people to system")
+
+        if os.path.exists(args['<filename>']):
+            filename = args['<filename>']
+            with open(filename, "r") as file:
+                lines = file.readlines()
+                for line in lines:
+                    person_details = line.split()
+                    if len(person_details) == 3:
+                        first_name = person_details[0]
+                        other_name = person_details[1]
+                        person_type = person_details[2]
+                        accomodate = "N"
+                        amity.add_person(first_name=first_name, other_name=other_name, person_type=person_type, accomodate=accomodate)
+                    elif len(person_details) == 4:
+                        first_name = person_details[0]
+                        other_name = person_details[1]
+                        person_type = person_details[2]
+                        accomodate = person_details[3]
+                        amity.add_person(first_name=first_name, other_name=other_name, person_type=person_type, accomodate=accomodate)
+                    else:
+                        print("An error occurred")
+        else:
+            click.secho('PLEASE PROVIDE A VALID FILE NAME.',fg='red', bold=True)
+
+
+    @parse
+    def do_quit(self, args):
+        """Usage: quit """
+        with click.progressbar(range(20000),
+                               label=click.secho(
+                               '\t\t\tAMITY SAYS GOODBYE!', blink=True, bold=True),
+                               fill_char=click.style('  ', bg='cyan')) as prog_bar:
+            for i in prog_bar:
+                pass
+        exit()
 
 
 if __name__ == '__main__':
