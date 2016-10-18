@@ -1,1 +1,0 @@
-from amity.people.person import Person
