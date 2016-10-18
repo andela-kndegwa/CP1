@@ -398,17 +398,8 @@ class Amity(object):
                 click.secho(unallocated, fg='yellow')
                 return 'Some people unallocated.'
 
-    def save_state():
-        pass
+    def save_state(self):
+        db = DatabaseManager()
 
     def load_state():
         pass
-
-
-# amity = Amity()
-# amity.create_room('o', 'lime')
-# amity.create_room('l', 'python')
-# amity.add_person('kim', 'nde', 'Fellow', 'y')
-# # # amity.print_allocations()
-# amity.reallocate_person('f1', 'python')
-# # print(amity.living_spaces)

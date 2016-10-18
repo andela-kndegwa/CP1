@@ -43,3 +43,4 @@ class DatabaseManager(object):
         self.session = sessionmaker()
         self.session.configure(bind=self.engine)
         Base.metadata.create_all(self.engine)
+

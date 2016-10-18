@@ -88,3 +88,7 @@ cp1kim/
 
 # Rope project settings
 .ropeproject
+
+#Coverage files
+.coverage
+.coverage.*
