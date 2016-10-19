@@ -190,7 +190,7 @@ class Interactive_Amity(cmd.Cmd):
 
 if __name__ == '__main__':
     try:
-        #start()
+        start()
         Interactive_Amity().cmdloop()
     except KeyboardInterrupt:
         with click.progressbar(range(20000),

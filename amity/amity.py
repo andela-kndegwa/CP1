@@ -152,9 +152,6 @@ class Amity(object):
             return 'No office'
 
         if accomodate == 'Y' and person_type == 'Fellow':
-            print(self.living_spaces['available'])
-            print(self.offices['available'])
-
             if not self.living_spaces['available']:
                 click.secho(
                     'Please add a living space for a fellow to be allocated both room types.',

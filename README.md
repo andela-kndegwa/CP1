@@ -62,6 +62,9 @@ There is also the need to have a way of determing how many people are at a parti
 
 4. Navigate into the Amity folder and run `python app.py`
 
+#4. Usage
+[![asciicast](https://asciinema.org/a/ecendttdj3a4lrp89n8luus30.png)](https://asciinema.org/a/ecendttdj3a4lrp89n8luus30)
+
 ## Credits
 
 [Kimani Ndegwa](https://github.com/andela-kndegwa)
