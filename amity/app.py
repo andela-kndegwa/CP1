@@ -21,7 +21,7 @@ import cmd
 from docopt import docopt, DocoptExit
 from ui import enter_amity
 from amity import Amity
-from db.database import *
+from db import database
 
 
 amity = Amity()
@@ -158,11 +158,16 @@ class Interactive_Amity(cmd.Cmd):
     @parse
     def do_save_state(self, args):
         """ Usage: save_state """
+        amity.save_state()
+
+    @parse
+    def do_load_state(self, args):
+        """ Usage: save_state """
         try:
-            add_people(amity.people)
-            click.secho('Success!People have been added to the database.')
-        except Exception as e:
-            print(e)
+            amity.load_state()
+            click.secho('Database successfully loaded onto the system', fg='green', bold=True)
+        except Exception:
+            click.secho('Oops!An error occurred. Please try again.', fg='red', bold=True)
 
     @parse
     def do_quit(self, args):

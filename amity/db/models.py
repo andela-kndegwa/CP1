@@ -10,12 +10,12 @@ Base = declarative_base()
 class People(Base):
     __tablename__ = 'people'
     id = Column(Integer, primary_key=True)
-    person_identifer = Column(String(250), unique=True, nullable=False)
-    person_name = Column(String(250), nullable=False)
-    person_type = Column(String(250), nullable=False)
-    wants_accomodation = Column(Boolean, default=False)
-    office_allocated = Column(String(250), nullable=False)
-    living_space_allocated = Column(String(250), nullable=False)
+    person_identifier = Column(String(250), unique=True)
+    person_name = Column(String(250))
+    person_type = Column(String(250))
+    wants_accomodation = Column(String(25))
+    office_allocated = Column(String(250))
+    living_space_allocated = Column(String(250))
 
     def __repr__(self):
         return "<Person(person_name='%s')>" % self.person_name
@@ -43,4 +43,3 @@ class DatabaseManager(object):
         self.session = sessionmaker()
         self.session.configure(bind=self.engine)
         Base.metadata.create_all(self.engine)
-
