@@ -4,6 +4,7 @@ Usage:
     create_room (L|O) <room_name>...
     add_person <first_name> <last_name> <person_type> [accomodate=N]
     reallocate_person <identifier> <new_room_name>
+    reallocate_unallocated <identifier> <new_room_name>
     load_people <filename>
     print_allocations [--o=filename.txt]
     print_unallocated [--o=filename.txt]
@@ -156,6 +157,11 @@ class Interactive_Amity(cmd.Cmd):
         amity.get_identifier(first_name, last_name)
 
     @parse
+    def do_reallocate_unallocated(self, args):
+        """ Usage: reallocate_unallocated <person_id> <room_name> """
+        amity.reallocate_unallocated(args['<person_id>'], args['<room_name>'])
+
+    @parse
     def do_save_state(self, args):
         """ Usage: save_state """
         amity.save_state()
@@ -166,7 +172,8 @@ class Interactive_Amity(cmd.Cmd):
         try:
             amity.load_state()
             click.secho('Database successfully loaded onto the system', fg='green', bold=True)
-        except Exception:
+        except Exception as e:
+            print(e)
             click.secho('Oops!An error occurred. Please try again.', fg='red', bold=True)
 
     @parse
@@ -183,7 +190,7 @@ class Interactive_Amity(cmd.Cmd):
 
 if __name__ == '__main__':
     try:
-        start()
+        #start()
         Interactive_Amity().cmdloop()
     except KeyboardInterrupt:
         with click.progressbar(range(20000),
