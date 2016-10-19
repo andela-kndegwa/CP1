@@ -1,5 +1,4 @@
 import unittest
-import mock
 from room import LivingSpace, Office
 
 
@@ -36,8 +35,7 @@ class TestRoomClassFunctionality(unittest.TestCase):
         self.assertEqual(office.capacity, 6)
         self.assertEqual(ls.capacity, 4)
 
-    @mock.patch('amity.rooms.room.Room.add_person', return_value=3)
-    def test_capacity_reduces_by_one_for_living_space(self, mock):
+    def test_capacity_reduces_by_one_for_living_space(self):
         '''
         The mock method here abstracts the room occupants indeed do
         decrease by one when the add person function is called.
@@ -45,8 +43,7 @@ class TestRoomClassFunctionality(unittest.TestCase):
         ls = LivingSpace('haskel')
         self.assertEqual(ls.add_person('one'), 3)
 
-    @mock.patch('amity.rooms.room.Room.add_person', return_value=5)
-    def test_capacity_reduces_by_one_for_office(self, mock):
+    def test_capacity_reduces_by_one_for_office(self):
         '''
         The mock method here abstracts the room occupants indeed do
         decrease by one when the add person function is called.
