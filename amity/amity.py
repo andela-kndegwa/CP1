@@ -581,3 +581,4 @@ class Amity(object):
                 elif p.office_allocated == room.room_name:
                     room.add_person(p.person_name)
 
+
