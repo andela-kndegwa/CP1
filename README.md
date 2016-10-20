@@ -39,8 +39,8 @@ There is also the need to have a way of determing how many people are at a parti
 #2. Commands.
 
 Command | Argument | Example
-
-create_room | L|O | create_room O Krypton
+--- | --- | ---
+create_room | L or O | create_room O Krypton
 
 add_person | <first_name> <last_name> <person_type> [--accomodate] |add_person Jermaine Cole Fellow --accomodate=Y
 
