@@ -38,9 +38,11 @@ There is also the need to have a way of determing how many people are at a parti
 
 #2. Commands.
 
->create_room (L|O) <room_name>...
+Command | Argument | Example
+--- | --- | ---
+create_room | (L|O) | create_room O Krypton
 
->add_person <first_name> <last_name> <person_type> <wants_space>
+dd_person <first_name> <last_name> <person_type> <wants_space>
 
 >reallocate_person <identifier> <new_room_name>
 
