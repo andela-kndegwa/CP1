@@ -1,7 +1,7 @@
 import os
 import unittest
 from amity import Amity
-from mock import patch, Mock
+from mock import patch
 
 
 class TestAmityFunctionality(unittest.TestCase):
@@ -271,6 +271,5 @@ class TestAmityFunctionality(unittest.TestCase):
         amity.add_person('Lyon', 'Witherspoon', 'Staff', 'n')
         res = amity.save_state()
         self.assertEqual(res, True)
-    # load_state functionality
-    
+
 

@@ -37,8 +37,12 @@ class DatabaseManager(object):
     Creates a db connection object
     """
 
-    def __init__(self):
-        self.db_name = 'default_amity_db.sqlite'
+    def __init__(self, db_name=None):
+        self.db_name = db_name
+        if self.db_name:
+            self.db_name = db_name + '.sqlite'
+        else:
+            self.db_name = 'default_amity_db.sqlite'
         self.engine = create_engine('sqlite:///' + self.db_name)
         self.session = sessionmaker()
         self.session.configure(bind=self.engine)
