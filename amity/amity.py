@@ -138,13 +138,6 @@ class Amity(object):
                 'THERE ARE NO ROOMS IN THE SYSTEM YET OR ALL ROOMS ARE FULL.',
                 fg='red', bold=True)
             return 'There are no rooms in the system.'
-        # if not self.living_spaces['available'] and accomodate == 'Y':
-        #     click.secho(
-        #         'There are no available living spaces at the moment. Please add one.')
-        #     return 'No living spaces'
-        # if not self.offices['available'] and accomodate == 'Y':
-        #     click.secho('No offices available at the moment. Please add one')
-        #     return 'No office'
 
         if accomodate == 'Y' and person_type == 'Fellow':
             if not self.living_spaces['available']:
@@ -157,12 +150,7 @@ class Amity(object):
                     'Please add an office for a fellow to be allocated both room types.',
                     fg='red', bold=True)
                 return 'No office for fellow requiring both.'
-        # if not self.rooms:
-        #     msg = 'Currently there are no rooms.'
-        #     msg += 'Please create a room before adding a person.'
-        #     msg += 'This is for purposes of random allocation.'
-        #     click.secho(msg, fg='red')
-        #     return 'No rooms added for random allocation.'
+
         if not self.people:
             if person_type.title() == 'Fellow':
                 f_id = 1

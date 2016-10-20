@@ -20,9 +20,8 @@ import os
 import click
 import cmd
 from docopt import docopt, DocoptExit
-from ui import enter_amity
+from ui import enter_amity, exit_bar
 from amity import Amity
-from db import database
 
 
 amity = Amity()
@@ -81,11 +80,10 @@ class Interactive_Amity(cmd.Cmd):
         try:
             for r in args['<room_name>']:
                 amity.create_room(args['<room_type>'], r)
-        except Exception as e:
-            print(e)
-            click.secho(
-                'Oops!An error occurred in running the command. Please try again',
-                fg='red', bold=True)
+        except Exception:
+            msg = 'Oops!An error occurred in running'
+            msg += ' the command. Please try again.'
+            click.secho(msg, fg='red', bold=True)
 
     @parse
     def do_add_person(self, args):
@@ -94,10 +92,10 @@ class Interactive_Amity(cmd.Cmd):
             amity.add_person(args['<first_name>'],
                              args['<other_name>'], args['<person_type>'],
                              args["<accomodate>"])
-        except Exception as e:
-            print(e)
-            click.secho(
-                'Oops!An error occurred in running the command. Please try again', fg='red', bold=True)
+        except Exception:
+            msg = 'Oops!An error occurred in running'
+            msg += ' the command. Please try again.'
+            click.secho(msg, fg='red', bold=True)
 
     @parse
     def do_reallocate_person(self, args):
@@ -134,15 +132,19 @@ class Interactive_Amity(cmd.Cmd):
                         other_name = person_details[1]
                         person_type = person_details[2]
                         accomodate = "N"
-                        amity.add_person(first_name=first_name, other_name=other_name,
-                                         person_type=person_type, accomodate=accomodate)
+                        amity.add_person(first_name=first_name,
+                                         other_name=other_name,
+                                         person_type=person_type,
+                                         accomodate=accomodate)
                     elif len(person_details) == 4:
                         first_name = person_details[0]
                         other_name = person_details[1]
                         person_type = person_details[2]
                         accomodate = person_details[3]
-                        amity.add_person(first_name=first_name, other_name=other_name,
-                                         person_type=person_type, accomodate=accomodate)
+                        amity.add_person(first_name=first_name,
+                                         other_name=other_name,
+                                         person_type=person_type,
+                                         accomodate=accomodate)
                     else:
                         print("An error occurred")
         else:
@@ -171,20 +173,16 @@ class Interactive_Amity(cmd.Cmd):
         """ Usage: save_state """
         try:
             amity.load_state()
-            click.secho('Database successfully loaded onto the system', fg='green', bold=True)
-        except Exception as e:
-            print(e)
-            click.secho('Oops!An error occurred. Please try again.', fg='red', bold=True)
+            click.secho('Database successfully loaded onto the system',
+                        fg='green', bold=True)
+        except Exception:
+            click.secho('Oops!An error occurred. Please try again.',
+                        fg='red', bold=True)
 
     @parse
     def do_quit(self, args):
         """Usage: quit """
-        with click.progressbar(range(20000),
-                               label=click.secho(
-                               '\t\t\tAMITY SAYS GOODBYE!', blink=True, bold=True),
-                               fill_char=click.style('  ', bg='cyan')) as prog_bar:
-            for i in prog_bar:
-                pass
+        exit_bar()
         exit()
 
 
@@ -193,9 +191,4 @@ if __name__ == '__main__':
         start()
         Interactive_Amity().cmdloop()
     except KeyboardInterrupt:
-        with click.progressbar(range(20000),
-                               label=click.secho(
-                               '\t\t\tAMITY SAYS GOODBYE!', blink=True, bold=True),
-                               fill_char=click.style('  ', bg='cyan')) as prog_bar:
-            for i in prog_bar:
-                pass
+        exit_bar()

@@ -17,7 +17,7 @@ def enter_amity():
             sys.stdout.flush()
             time.sleep(0.04)
     click.secho("DONE!", bold=True)
-    #Amity Pyfilget format begins here!
+    # Amity Pyfilget format begins here!
     time.sleep(0.9)
     click.secho('=' * 75, fg='cyan')
     click.secho('*' * 75, fg='yellow')
@@ -28,4 +28,11 @@ def enter_amity():
     click.secho('=' * 75, fg='cyan')
 
 
-
+def exit_bar():
+    with click.progressbar(range(20000),
+                           label=click.secho(
+            '\t\t\tAMITY SAYS GOODBYE!',
+                           blink=True, bold=True),
+                           fill_char=click.style('  ', bg='cyan')) as prog_bar:
+        for i in prog_bar:
+            pass

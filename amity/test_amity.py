@@ -1,3 +1,4 @@
+import os
 import unittest
 from amity import Amity
 from mock import patch, Mock
@@ -244,20 +245,32 @@ class TestAmityFunctionality(unittest.TestCase):
     # test print unallocated
     def test_print_unallocated_if_all_allocated(self):
         amity = Amity()
-        mocked_room = Mock()
-        mocked_room.room_name = 'Lyon'
-        mocked_room.room_type = 'Office'
+        amity.create_room('o', 'lyon')
         amity.add_person('Lyon', 'Witherspoon', 'Staff', 'n')
         res = amity.print_unallocated()
         self.assertEqual(res, 'No unallocated people as per now.')
 
     def test_print_unallocated_if_exisiting(self):
         amity = Amity()
-        mocked_room = Mock()
-        mocked_room.room_name = 'Witherspoon'
-        mocked_room.room_type = 'Office'
+        amity.create_room('o', 'Witherspoon')
         amity.add_person('Lyon', 'Witherspoon', 'Staff', 'n')
         amity.unallocated_persons.append('Person Name')
         res = amity.print_unallocated()
         self.assertEqual(res, 'Some people unallocated.')
+    # save state functionality
+
+    def test_save_state(self):
+        amity = Amity()
+        amity.create_room('o', 'Witherspoon')
+        amity.add_person('Lyon', 'Witherspoon', 'Staff', 'n')
+        self.assertFalse(os.path.exists('default_db_amity.sqlite'))
+
+    def save_state_works(self):
+        amity = Amity()
+        amity.create_room('o', 'Witherspoon')
+        amity.add_person('Lyon', 'Witherspoon', 'Staff', 'n')
+        res = amity.save_state()
+        self.assertEqual(res, True)
+    # load_state functionality
+    
 
