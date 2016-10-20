@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -37,9 +37,12 @@ class DatabaseManager(object):
     Creates a db connection object
     """
 
-    def __init__(self):
-        self.db_name = 'default_amity_db.sqlite'
+    def __init__(self, db_name):
+        self.db_name = db_name
         self.engine = create_engine('sqlite:///' + self.db_name)
         self.session = sessionmaker()
         self.session.configure(bind=self.engine)
         Base.metadata.create_all(self.engine)
+
+
+db = DatabaseManager('amity.db')

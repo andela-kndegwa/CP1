@@ -487,6 +487,7 @@ class Amity(object):
                     room.add_person(person.person_name)
                 elif room.room_name == of:
                     room.add_person(person.person_name)
+
 # amity = Amity()
 # amity.create_room('O', 'Lime')
 # amity.create_room('O', 'cyan')
