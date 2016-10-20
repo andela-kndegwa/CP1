@@ -39,11 +39,6 @@ class Amity(object):
         self.staff_allocations = []
         self.fellow_allocations = []
         self.unallocated_persons = []
-        # Database interactions
-
-    # def set_up_rooms(self):
-    #     self.rooms = [room for main_rooms in [self.offices.values(), self.living_spaces.values(
-    #     )] for main_rooms_items in main_rooms for room in main_rooms_items]
 
     def create_room(self, room_type, room_name):
         '''
@@ -115,7 +110,7 @@ class Amity(object):
         if first_name.isalpha() is False or other_name.isalpha() is False:
             click.secho('Person names need be alphabetical in nature',
                         fg='red', bold=True)
-            return 'Non-Alphanumeric names added'
+            return 'Non-Alphabetical names added'
         if person_type.title() not in ['Fellow', 'Staff']:
             click.secho('Please enter either Fellow or Staff for person type',
                         fg='red', bold=True)
@@ -130,7 +125,7 @@ class Amity(object):
             click.secho(
                 'A Staff member cannot be allocated accomodation.',
                 fg='red', bold=True)
-            return 'Staff cannot have wants allocation of Yes.'
+            return 'Staff cannot have wants accomodation of Y.'
         fn = first_name.title() + ' ' + other_name.title()
         for person in self.people:
             if person.full_name == fn and \
@@ -143,13 +138,13 @@ class Amity(object):
                 'THERE ARE NO ROOMS IN THE SYSTEM YET OR ALL ROOMS ARE FULL.',
                 fg='red', bold=True)
             return 'There are no rooms in the system.'
-        if not self.living_spaces['available'] and accomodate == 'Y':
-            click.secho(
-                'There are no available living spaces at the moment. Please add one.')
-            return 'No living spaces'
-        if not self.offices['available'] and accomodate == 'Y':
-            click.secho('No offices available at the moment. Please add one')
-            return 'No office'
+        # if not self.living_spaces['available'] and accomodate == 'Y':
+        #     click.secho(
+        #         'There are no available living spaces at the moment. Please add one.')
+        #     return 'No living spaces'
+        # if not self.offices['available'] and accomodate == 'Y':
+        #     click.secho('No offices available at the moment. Please add one')
+        #     return 'No office'
 
         if accomodate == 'Y' and person_type == 'Fellow':
             if not self.living_spaces['available']:
@@ -162,12 +157,12 @@ class Amity(object):
                     'Please add an office for a fellow to be allocated both room types.',
                     fg='red', bold=True)
                 return 'No office for fellow requiring both.'
-        if not self.rooms:
-            msg = 'Currently there are no rooms.'
-            msg += 'Please create a room before adding a person.'
-            msg += 'This is for purposes of random allocation.'
-            click.secho(msg, fg='red')
-            return 'No rooms added for random allocation.'
+        # if not self.rooms:
+        #     msg = 'Currently there are no rooms.'
+        #     msg += 'Please create a room before adding a person.'
+        #     msg += 'This is for purposes of random allocation.'
+        #     click.secho(msg, fg='red')
+        #     return 'No rooms added for random allocation.'
         if not self.people:
             if person_type.title() == 'Fellow':
                 f_id = 1
@@ -211,7 +206,7 @@ class Amity(object):
                     (person.person_type, person.full_name),
                     fg='green', bold=True)
         click.secho('ALLOCATING ROOM ...', fg='cyan')
-        time.sleep(2)
+        time.sleep(1)
         # random allocation
         # only a fellow can be allocated a living space
         # a staff can only be allocated an office.
@@ -288,14 +283,22 @@ class Amity(object):
                             click.secho(msg, fg='red', bold=True)
 
     def get_identifier(self, first_name, last_name):
+        """
+        The get identfier method intends to get a person's
+        id to be able to reallocate them appropriately.
+        """
         if not self.people:
             click.secho('There are Currently no people in the system.')
             return 'No people added'
-        fn = first_name.title() + ' ' + last_name.title()
-        for person in self.people:
-            if person.full_name == fn:
-                msg = click.secho(person.identifier, fg='green')
-        return msg
+        else:
+            fn = first_name.title() + ' ' + last_name.title()
+            for person in self.people:
+                if person.full_name == fn:
+                    msg = click.secho(person.identifier, fg='green')
+                    return person.identifier
+            else:
+                msg = click.secho('Person does not exist.', fg='red')
+                return msg
 
     def reallocate_person(self, person_id, room_name):
         '''
@@ -305,9 +308,6 @@ class Amity(object):
         PERSON_ID which in this case is the identifier
         is converted to upper case.
         '''
-        # available_offices = []
-        # available_living_spaces = []
-        # available_rooms = available_offices + available_living_spaces
         available_rooms = []
         if type(room_name) != str:
             return 'Error. Please enter valid room name.'
@@ -317,6 +317,11 @@ class Amity(object):
             available_rooms.append(room)
         person_id = person_id.upper()
         room_name = room_name.title()
+        for person in self.people:
+            if person.full_name in self.unallocated_persons and person.identifier == person_id:
+                click.secho('Person is not allocated. Please use --->reallocate unallocated',
+                            fg='yellow', bold=True)
+                return 'unallocated person.'
         if room_name.title() not in available_rooms:
             click.secho('Room name %s does not exist.' %
                         room_name, fg='red', bold=True)
@@ -325,17 +330,9 @@ class Amity(object):
             if person.accomodate == 'N' and person.identifier == person_id:
                 if room_name in self.living_spaces['available']:
                     click.secho(
-                        'Cant move fellow from office to living space', fg='red', bold=True)
+                        'Cant move fellow from office to living space',
+                        fg='red', bold=True)
                     return 'Fellow does not want accomodation'
-        for person in self.people:
-            if person.identifier == person_id:
-                wanted_name = person.full_name
-        for room in self.rooms:
-            if wanted_name in room.occupants and \
-                    room.room_name == room_name:
-                click.secho('You cannot be reallocated to the same room.',
-                            fg='red', bold=True)
-                return 'cant reallocate to same room'
         all_person_ids = []
         for person in self.people:
             all_person_ids.append(person.identifier)
@@ -345,6 +342,15 @@ class Amity(object):
             click.secho('Person ID entered does not exist.',
                         fg='red', bold=True)
             return "Invalid person id."
+        for person in self.people:
+            if person.identifier == person_id:
+                wanted_name = person.full_name
+        for room in self.rooms:
+            if wanted_name in room.occupants and \
+                    room.room_name == room_name:
+                click.secho('You cannot be reallocated to the same room.',
+                            fg='red', bold=True)
+                return 'cant reallocate to same room'
         if room_name in self.offices['available']:
             room_t = 'Office'
         if room_name in self.living_spaces['available']:
@@ -363,6 +369,39 @@ class Amity(object):
                             fg='green', bold=True)
                 return 'Person reallocated to %s' % room_name
 
+    def reallocate_unallocated(self, person_id, room_name):
+        # Reallocate someone who is in the unallocated section
+        available_rooms = []
+        if type(room_name) != str:
+            return 'Error. Please enter valid room name.'
+        room_name = room_name.title()
+        person_id = person_id.upper()
+        people_ids = []
+        for person in self.people:
+            people_ids.append(person.identifier)
+        if person_id not in people_ids:
+            click.secho('Person ID does not exist', fg='red', bold=True)
+            return 'Person ID does not exist.'
+
+        for room in self.offices['available']:
+            available_rooms.append(room)
+        for room in self.living_spaces['available']:
+            available_rooms.append(room)
+        if room_name.title() not in available_rooms:
+            click.secho('Room name %s does not exist.' %
+                        room_name, fg='red', bold=True)
+            return 'Room does not exist.'
+        for person in self.people:
+            if person.full_name in self.unallocated_persons and \
+                    person.identifier == person_id:
+                unallocated_person = person.full_name
+        for room in self.rooms:
+            if room.room_name == room_name:
+                room.occupants.append(unallocated_person)
+                self.unallocated_persons.remove(unallocated_person)
+                click.secho('%s reallocated to %s' % (
+                    unallocated_person, room_name), fg='green', bold=True)
+
     def print_room(self, room_name):
         '''
         This function gets a room name as an argument and proceeds
@@ -371,6 +410,7 @@ class Amity(object):
         if not self.rooms:
             click.secho('THERE ARE NO ROOMS IN THE SYSTEM YET.',
                         fg='red', bold=True)
+            return 'No rooms exist at the moment.'
         all_rooms = []
         for room in self.rooms:
             all_rooms.append(room.room_name)
@@ -383,7 +423,8 @@ class Amity(object):
         for room in self.rooms:
             if room.room_name == room_name:
                 click.secho('ROOM NAME:%s(%s)' %
-                            (room_name, room.room_type), fg='yellow', bold=True)
+                            (room_name, room.room_type),
+                            fg='yellow', bold=True)
                 click.secho('=' * 20, fg='cyan')
                 if room.occupants:
                     for occupant in room.occupants:
@@ -426,6 +467,9 @@ class Amity(object):
                             ls_allocated = room.room_name
                         else:
                             ls_allocated = None
+                    if person.full_name in self.unallocated_persons:
+                        ls_allocated = 'Unallocated'
+                        office_allocated = 'Unallocated'
                 person_to_db = People(
                     person_identifier=person.identifier,
                     person_name=person.full_name,
@@ -465,32 +509,66 @@ class Amity(object):
         all_people = session.query(People).all()
         all_rooms = session.query(Rooms).all()
         for r in all_rooms:
-            if r.room_type == 'Office' and r.room_capacity > 0:
+            if r.room_type == 'Office':
                 room = Office(r.room_name)
-                self.offices['available'].append(r.room_name)
-            else:
-                self.offices['unavailable'].append(r.room_name)
-            if r.room_type == 'Living Space' and r.room_capacity > 0:
+                if r.room_capacity > 0:
+                    self.offices['available'].append(r.room_name)
+                else:
+                    self.offices['unavailable'].append(r.room_name)
+            if r.room_type == 'Living Space':
                 room = LivingSpace(r.room_name)
-                self.living_spaces['available'].append(r.room_name)
-            else:
-                self.living_spaces['unavailable'].append(r.room_name)
+                if r.room_capacity > 0:
+                    self.living_spaces['available'].append(r.room_name)
+                else:
+                    self.living_spaces['unavailable'].append(r.room_name)
             self.rooms.append(room)
-
-        for person in all_people:
-            if person.living_space_allocated:
-                ls = person.living_space_allocated
-            if person.office_allocated:
-                of = person.office_allocated
+        for p in all_people:
+            if not self.people:
+                if p.person_type == 'Fellow':
+                    full_name = p.person_name.split()
+                    person = Fellow(full_name[0], full_name[1])
+                    f_id = 1
+                    self.f_ids.append(f_id)
+                    identifier = 'F' + str(f_id)
+                    person.identifier = identifier
+                    person.accomodate = p.wants_accomodation
+                    person.get_full_name()
+                    self.fellows.append(person.full_name)
+                elif p.person_type == 'Staff':
+                    full_name = p.person_name.split()
+                    person = Staff(full_name[0], full_name[1])
+                    s_id = 1
+                    self.s_ids.append(s_id)
+                    identifier = 'S' + str(s_id)
+                    person.identifier = identifier
+                    person.accomodate = p.wants_accomodation
+                    person.get_full_name()
+                    self.staff.append(person.full_name)
+            else:
+                if p.person_type == 'Fellow':
+                    full_name = p.person_name.split()
+                    person = Fellow(full_name[0], full_name[1])
+                    f_id = self.f_ids.pop() + 1
+                    identifier = 'F' + str(f_id)
+                    self.f_ids.append(f_id)
+                    person.accomodate = p.wants_accomodation
+                    person.identifier = identifier
+                    person.get_full_name()
+                    self.fellows.append(person.full_name)
+                elif p.person_type == 'Staff':
+                    full_name = p.person_name.split()
+                    person = Staff(full_name[0], full_name[1])
+                    s_id = self.s_ids.pop() + 1
+                    identifier = 'S' + str(s_id)
+                    person.identifier = identifier
+                    self.s_ids.append(s_id)
+                    person.accomodate = p.wants_accomodation
+                    person.get_full_name()
+                    self.fellows.append(person.full_name)
+            self.people.append(person)
+            # Append person object to people list.
             for room in self.rooms:
-                if room.room_name == ls:
-                    room.add_person(person.person_name)
-                elif room.room_name == of:
-                    room.add_person(person.person_name)
-
-# amity = Amity()
-# amity.create_room('O', 'Lime')
-# amity.create_room('O', 'cyan')
-# amity.create_room('L', 'PYTHON')
-# amity.add_person('kim', 'ndegwa', 'fellow', 'y')
-# amity.save_state()
+                if p.living_space_allocated == room.room_name:
+                    room.add_person(p.person_name)
+                elif p.office_allocated == room.room_name:
+                    room.add_person(p.person_name)
