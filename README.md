@@ -39,36 +39,29 @@ There is also the need to have a way of determing how many people are at a parti
 #2. Commands.
 
 Command | Argument | Example
---- | --- | ---
 create_room | L|O | create_room O Krypton
---- | --- | ---
 add_person | <first_name> <last_name> <person_type> [--accomodate] |add_person Jermaine Cole Fellow --accomodate=Y
---- | --- | ---
 reallocate_person | <identifier> <new_room_name> | reallocate_person F1 Dreameville
---- | --- | ---
 load_people | <filename> | load_people samplefile.txt
---- | --- | ---
 print_allocations| [--o=filename] | print_allocations --allocations
---- | --- | ---
 print_unallocated| [--o=filename] | print_unallocated --allocations
---- | --- | ---
 print_room | <room_name> | print_room Fayetteville
---- | --- | ---
 save_state | [--db=sqlite_database]| save_state --db=carolina
---- | --- | ---
 load_state |<sqlite_database>|load_state my_newdatabase
 
 #3. Installation and set up.
 
 1. First clone this repository to your local machine using `git clone https://github.com/andela-kndegwa/CP1.git`
 
-2. Checkout into the **staging** branch using 'git checkout staging'
+2. Checkout into the **develop** branch using 'git checkout develop'
 
-3. Create a virtualenv on your machine and install the dependencies via `pip install -r requirements.txt`
+3. Create a *virtualenv* on your machine and install the dependencies via `pip install -r requirements.txt` and activate it.
 
-4. Navigate into the Amity folder and run `python app.py`
+4. cd into the *amity* folder and run `python app.py`
 
 #4. Usage
+The following screencast shows how to run the different commands. Check it out:
+
 [![asciicast](https://asciinema.org/a/ecendttdj3a4lrp89n8luus30.png)](https://asciinema.org/a/ecendttdj3a4lrp89n8luus30)
 
 ## Credits
@@ -79,7 +72,7 @@ load_state |<sqlite_database>|load_state my_newdatabase
 
 ### The MIT License (MIT)
 
-Copyright (c) 2016 Kimani Ndegwa.
+Copyright (c) 2016 [Kimani Ndegwa](https://www.kimanindegwa.co.ke).
 
 > Permission is hereby granted, free of charge, to any person obtaining a copy
 > of this software and associated documentation files (the "Software"), to deal
