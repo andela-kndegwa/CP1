@@ -40,19 +40,23 @@ There is also the need to have a way of determing how many people are at a parti
 
 Command | Argument | Example
 --- | --- | ---
-create_room | (L|O) | create_room O Krypton
-
-dd_person <first_name> <last_name> <person_type> <wants_space>
-
->reallocate_person <identifier> <new_room_name>
-
->load_people <filename>
-
->print_allocations
-
->print_unallocated
-
->print_room <room_name>
+create_room | L|O | create_room O Krypton
+--- | --- | ---
+add_person | <first_name> <last_name> <person_type> [--accomodate] |add_person Jermaine Cole Fellow --accomodate=Y
+--- | --- | ---
+reallocate_person | <identifier> <new_room_name> | reallocate_person F1 Dreameville
+--- | --- | ---
+load_people | <filename> | load_people samplefile.txt
+--- | --- | ---
+print_allocations| [--o=filename] | print_allocations --allocations
+--- | --- | ---
+print_unallocated| [--o=filename] | print_unallocated --allocations
+--- | --- | ---
+print_room | <room_name> | print_room Fayetteville
+--- | --- | ---
+save_state | [--db=sqlite_database]| save_state --db=carolina
+--- | --- | ---
+load_state |<sqlite_database>|load_state my_newdatabase
 
 #3. Installation and set up.
 
