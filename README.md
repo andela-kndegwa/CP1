@@ -67,7 +67,9 @@ The following screencast shows how to run the different commands. Check it out:
 
 ## Credits
 
-[Kimani Ndegwa](https://github.com/andela-kndegwa)
+1. [Kimani Ndegwa](https://github.com/andela-kndegwa)
+
+2. The amazing [Andela](https://www.andela.com) community.
 
 ## License
 
