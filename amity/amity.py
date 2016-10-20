@@ -468,10 +468,14 @@ class Amity(object):
                     file.write('\n')
                 click.secho('Print out made to %s.txt' % filename, fg='green')
 
-    def save_state(self):
+    def save_state(self, db_name=None):
         if os.path.exists('default_amity_db.sqlite'):
             os.remove('default_amity_db.sqlite')
-        db = DatabaseManager()
+        if db_name is None:
+            db = DatabaseManager()
+        else:
+            db = DatabaseManager(db_name)
+        # db = DatabaseManager()
         Base.metadata.bind = db.engine
         s = db.session()
         # import ipdb; ipdb.set_trace()
@@ -515,13 +519,13 @@ class Amity(object):
             print(e)
             return "Error encountered when adding people to db."
 
-    def load_state(self):
+    def load_state(self, db_name):
         '''
         This function queries from the database and contiues the
         seesion from that point as expected.
 
         '''
-        engine = create_engine('sqlite:///default_amity_db.sqlite')
+        engine = create_engine('sqlite:///' + db_name + '.sqlite')
         Session = sessionmaker()
         Session.configure(bind=engine)
         session = Session()

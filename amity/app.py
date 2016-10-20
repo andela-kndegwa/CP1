@@ -1,13 +1,13 @@
 """
-TIA -This is Amity.
+TIA -This is Amity!
 Usage:
     create_room (L|O) <room_name>...
-    add_person <first_name> <last_name> <person_type> [accomodate=N]
+    add_person <first_name> <last_name> <person_type> [--accomodate=N]
     reallocate_person <identifier> <new_room_name>
     reallocate_unallocated <identifier> <new_room_name>
     load_people <filename>
-    print_allocations [--o=filename.txt]
-    print_unallocated [--o=filename.txt]
+    print_allocations [--o=filename]
+    print_unallocated [--o=filename]
     print_room <room_name>
     save_state [--db=sqlite_database]
     load_state <sqlite_database>
@@ -61,7 +61,6 @@ def parse(func):
 def start():
 
     enter_amity()
-
     arguments = __doc__
     print(arguments)
 
@@ -179,14 +178,18 @@ class Interactive_Amity(cmd.Cmd):
 
     @parse
     def do_save_state(self, args):
-        """ Usage: save_state """
-        amity.save_state()
+        """ Usage: save_state [--db=sqlite_database]"""
+        db = args['--db']
+        if db:
+            amity.save_state(db)
+        else:
+            amity.save_state()
 
     @parse
     def do_load_state(self, args):
-        """ Usage: save_state """
+        """ Usage: save_state <sqlite_database>"""
         try:
-            amity.load_state()
+            amity.load_state(args['<sqlite_database>'])
             click.secho('Database successfully loaded onto the system',
                         fg='green', bold=True)
         except Exception:
