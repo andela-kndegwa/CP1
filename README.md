@@ -41,9 +41,7 @@ There is also the need to have a way of determing how many people are at a parti
 Command | Argument | Example
 --- | --- | ---
 create_room | L or O | create_room O Krypton
-
 add_person | <first_name> <last_name> <person_type> [--accomodate] |add_person Jermaine Cole Fellow --accomodate=Y
-
 reallocate_person | <identifier> <new_room_name> | reallocate_person F1 Dreameville
 
 load_people | <filename> | load_people samplefile.txt
