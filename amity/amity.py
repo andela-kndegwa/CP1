@@ -475,10 +475,8 @@ class Amity(object):
             db = DatabaseManager()
         else:
             db = DatabaseManager(db_name)
-        # db = DatabaseManager()
         Base.metadata.bind = db.engine
         s = db.session()
-        # import ipdb; ipdb.set_trace()
         try:
             for person in self.people:
                 for room in self.rooms:
