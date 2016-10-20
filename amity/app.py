@@ -87,12 +87,18 @@ class Interactive_Amity(cmd.Cmd):
 
     @parse
     def do_add_person(self, args):
-        """Usage: add_person <first_name> <other_name> <person_type> <accomodate> """
+        """Usage: add_person <first_name> <other_name> <person_type> [--accomodate=N] """
+        if args['--accomodate'] is None:
+            args['--accomodate'] = 'N'
+        else:
+            args['--accomodate'] = args['--accomodate']
+
         try:
             amity.add_person(args['<first_name>'],
                              args['<other_name>'], args['<person_type>'],
-                             args["<accomodate>"])
-        except Exception:
+                             args['--accomodate'])
+        except Exception as e:
+            print(e)
             msg = 'Oops!An error occurred in running'
             msg += ' the command. Please try again.'
             click.secho(msg, fg='red', bold=True)
@@ -109,13 +115,21 @@ class Interactive_Amity(cmd.Cmd):
 
     @parse
     def do_print_allocations(self, args):
-        """Usage: print_allocations """
-        amity.print_allocations()
+        """Usage: print_allocations [--o=filename]"""
+        filename = args['--o']
+        if filename:
+            amity.print_allocations(filename)
+        else:
+            amity.print_allocations()
 
     @parse
     def do_print_unallocated(self, args):
-        """Usage: print_unallocated """
-        amity.print_unallocated()
+        """Usage: print_unallocated [--o=filename]"""
+        filename = args['--o']
+        if filename:
+            amity.print_unallocated(filename)
+        else:
+            amity.print_unallocated()
 
     @parse
     def do_load_people(self, args):

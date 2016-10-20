@@ -78,7 +78,7 @@ class Amity(object):
                     (room.room_type, room.room_name), bold=True, fg='green')
         return 'Room %s created.' % room.room_name
 
-    def print_allocations(self):
+    def print_allocations(self, filename=None):
         """
         This prints allocations to the screen and
         highlights if they are empty or have any
@@ -89,17 +89,33 @@ class Amity(object):
             click.secho('THERE ARE NO ROOMS IN THE SYSTEM.',
                         fg='red', bold=True)
             return 'Error. No rooms within system.'
-        for room in self.rooms:
-            click.secho('==' * 30, fg='cyan')
-            click.secho(room.room_name + '(' + room.room_type + ')',
+
+        if filename is None:
+            for room in self.rooms:
+                click.secho('==' * 30, fg='cyan')
+                click.secho(room.room_name + '(' + room.room_type + ')',
+                            fg='cyan')
+                click.secho('==' * 30, fg='cyan')
+                if room.occupants:
+                    for occupant in room.occupants:
+                        click.secho(occupant)
+                else:
+                    click.secho(
+                        'There are no people in %s yet.' % room.room_name,
                         fg='cyan')
-            click.secho('==' * 30, fg='cyan')
-            if room.occupants:
-                for occupant in room.occupants:
-                    click.secho(occupant)
-            else:
-                click.secho(
-                    'There are no people in this room yet.', fg='cyan')
+        else:
+            for room in self.rooms:
+                file = open(filename + '.txt', 'w')
+                file.write(room.room_name)
+                file.write('\n')
+                file.write('--' * 30)
+                file.write('\n')
+                if room.occupants:
+                    for occupant in room.occupants:
+                        file.write(occupant + ' ')
+                else:
+                    file.write('%s is empty' % room.room_name)
+            click.secho('Print out made to %s.txt' % filename, fg='green')
 
     def add_person(self, first_name, other_name, person_type,
                    accomodate='N'):
@@ -132,6 +148,11 @@ class Amity(object):
                     person.person_type == person_type.title():
                 click.secho('%s %s ALREADY EXISTS.' % (person_type, fn))
                 return 'Person exists.'
+        if not self.offices['available'] and person_type == 'Staff':
+            click.secho(
+                'There are no offices or the offices are all full.',
+                fg='red', bold=True)
+            return 'There are no offices in the system.'
         if not self.living_spaces['available'] and not \
                 self.offices['available']:
             click.secho(
@@ -376,7 +397,7 @@ class Amity(object):
         for room in self.living_spaces['available']:
             available_rooms.append(room)
         if room_name.title() not in available_rooms:
-            click.secho('Room name %s does not exist.' %
+            click.secho('Room name %s does not exist or is full.' %
                         room_name, fg='red', bold=True)
             return 'Room does not exist.'
         for person in self.people:
@@ -421,7 +442,7 @@ class Amity(object):
                     click.secho('Its lonely here.', fg='cyan', bold=True)
                     return False
 
-    def print_unallocated(self):
+    def print_unallocated(self, filename=None):
         '''
         After Max capacity has been recorded in a particular
         room, the person is thereafter appended to a the unallocated
@@ -432,10 +453,20 @@ class Amity(object):
                         fg='green', bold=True)
             return 'No unallocated people as per now.'
         else:
-            click.secho('UNALLOCATED PEOPLE IN MY AMITY.', fg='red', bold=True)
-            for unallocated in self.unallocated_persons:
-                click.secho(unallocated, fg='yellow')
-                return 'Some people unallocated.'
+            if filename is None:
+                click.secho('UNALLOCATED PEOPLE IN MY AMITY.',
+                            fg='red', bold=True)
+                for unallocated in self.unallocated_persons:
+                    click.secho(unallocated, fg='yellow')
+                    return 'Some people unallocated.'
+            else:
+                file = open(filename + '.txt', 'w')
+                file.write("UNALLOCATED PEOPLE IN MY AMITY.")
+                file.write('\n')
+                for unallocated in self.unallocated_persons:
+                    file.write(unallocated)
+                    file.write('\n')
+                click.secho('Print out made to %s.txt' % filename, fg='green')
 
     def save_state(self):
         if os.path.exists('default_amity_db.sqlite'):
@@ -558,5 +589,7 @@ class Amity(object):
             for room in self.rooms:
                 if p.living_space_allocated == room.room_name:
                     room.add_person(p.person_name)
-                elif p.office_allocated == room.room_name:
+                if p.office_allocated == room.room_name:
                     room.add_person(p.person_name)
+            if p.office_allocated == 'Unallocated':
+                self.unallocated_persons.append(p.person_name)
