@@ -95,12 +95,6 @@ class TestAmityFunctionality(unittest.TestCase):
         self.assertTrue(res)
         self.assertEqual(res, 'Invalid Person Type')
 
-    def test_staff_cannot_want_accomodation(self):
-        self.amity.create_room('l', 'ruby')
-        res = self.amity.add_person('alex', 'graham', 'staff', 'y')
-        self.assertTrue(res)
-        self.assertEqual(res, 'Staff cannot have wants accomodation of Y.')
-
     def test_wants_accomodation_is_either_y_or_n(self):
         self.amity.create_room('o', 'lilac')
         res = self.amity.add_person('seralynnette', 'nduta', 'Fellow', 'Yes')
