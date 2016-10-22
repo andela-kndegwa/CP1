@@ -94,11 +94,12 @@ class Interactive_Amity(cmd.Cmd):
 
         try:
             validated_details = amity.validate_person(args['<first_name>'],
-                                                      args['<other_name>'], args[
-                                                          '<person_type>'],
+                                                      args['<other_name>'],
+                                                      args['<person_type>'],
                                                       args['--accomodate'])
-            person = amity.generate_identifier(validated_details)
-            amity.allocate_room(person)
+            if type(validated_details) == list:
+                person = amity.generate_identifier(validated_details)
+                amity.allocate_room(person)
         except Exception as e:
             print(e)
             msg = 'Oops!An error occurred in running'
@@ -148,19 +149,27 @@ class Interactive_Amity(cmd.Cmd):
                         other_name = person_details[1]
                         person_type = person_details[2]
                         accomodate = "N"
-                        amity.add_person(first_name=first_name,
-                                         other_name=other_name,
-                                         person_type=person_type,
-                                         accomodate=accomodate)
+                        validated_details = amity.validate_person(first_name=first_name,
+                                                                  other_name=other_name,
+                                                                  person_type=person_type,
+                                                                  accomodate=accomodate)
+                        if type(validated_details) == list:
+                            person = amity.generate_identifier(
+                                validated_details)
+                            amity.allocate_room(person)
                     elif len(person_details) == 4:
                         first_name = person_details[0]
                         other_name = person_details[1]
                         person_type = person_details[2]
                         accomodate = person_details[3]
-                        amity.add_person(first_name=first_name,
-                                         other_name=other_name,
-                                         person_type=person_type,
-                                         accomodate=accomodate)
+                        validated_details = amity.validate_person(first_name=first_name,
+                                                                  other_name=other_name,
+                                                                  person_type=person_type,
+                                                                  accomodate=accomodate)
+                        if type(validated_details) == list:
+                            person = amity.generate_identifier(
+                                validated_details)
+                            amity.allocate_room(person)
                     else:
                         print("An error occurred")
         else:
