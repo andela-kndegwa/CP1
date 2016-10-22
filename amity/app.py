@@ -93,9 +93,12 @@ class Interactive_Amity(cmd.Cmd):
             args['--accomodate'] = args['--accomodate']
 
         try:
-            amity.add_person(args['<first_name>'],
-                             args['<other_name>'], args['<person_type>'],
-                             args['--accomodate'])
+            validated_details = amity.validate_person(args['<first_name>'],
+                                                      args['<other_name>'], args[
+                                                          '<person_type>'],
+                                                      args['--accomodate'])
+            person = amity.generate_identifer(validated_details)
+            amity.allocate_room(person)
         except Exception as e:
             print(e)
             msg = 'Oops!An error occurred in running'

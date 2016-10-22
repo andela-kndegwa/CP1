@@ -6,16 +6,23 @@ from amity.people.person import Fellow, Staff
 
 class Checker():
     def __init__(self):
-        self.people = []
         self.rooms = []
         self.offices = {
-            'available': [],
+            'available': ['Alpha'],
             'unavailable': []
         }
         self.living_spaces = {
             'available': [],
             'unavailable': []
         }
+        self.f_ids = [0]
+        self.s_ids = [0]
+        self.fellows = []
+        self.staff = []
+        self.people = self.staff + self.fellows
+        self.staff_allocations = []
+        self.fellow_allocations = []
+        self.allocations = self.fellow_allocations + self.staff_allocations
 
     def validate_person(self, first_name, other_name, person_type,
                         accomodate='N'):
@@ -43,11 +50,9 @@ class Checker():
                 fg='red', bold=True)
         fn = first_name.title() + ' ' + other_name.title()
         return [fn, accomodate, person_type]
-
-    def validate_state_of_amity(self, validated_details):
-        fn = validated_details[0]
-        accomodate = validated_details[1]
-        person_type = validated_details[2]
+        # fn = validated_details[0]
+        # accomodate = validated_details[1]
+        # person_type = validated_details[2]
         for person in self.people:
             if person.full_name == fn and \
                     person.person_type == person_type.title():
@@ -76,6 +81,7 @@ class Checker():
                 msg += 'to be allocated both room types.'
                 click.secho(msg, fg='red', bold=True)
                 return 'No office for fellow requiring both.'
+        return [fn, accomodate, person_type]
 
     def generate_identifer(self, validated_details):
         fn = validated_details[0]
@@ -126,14 +132,13 @@ class Checker():
                     fg='green', bold=True)
         click.secho('ALLOCATING ROOM ...', fg='cyan')
         time.sleep(1)
+        return person
 
-    def allocate_room(self, validated_details, person):
+    def allocate_room(self, person):
         # random allocation
         # only a fellow can be allocated a living space
         # a staff can only be allocated an office.
-        person_type = validated_details[0]
-        accomodate = validated_details[1]
-        if person_type == 'Staff':
+        if person.person_type == 'Staff':
             staff_single_allocation = {}
             staff_single_allocation[person.full_name] = self.offices['available'][
                 randint(0, (len(self.offices['available']) - 1))]
@@ -151,8 +156,8 @@ class Checker():
                         msg += 'Please add another %s.' % room.room_type
                         click.secho(msg, fg='red', bold=True)
 
-        if person_type == 'Fellow':
-            if accomodate == 'Y':
+        if person.person_type == 'Fellow':
+            if person.accomodate == 'Y':
                 fellow_single_allocation = {}
                 fellow_single_allocation['name'] = person.full_name
                 fellow_single_allocation['office'] = self.offices['available'][
@@ -203,10 +208,11 @@ class Checker():
                             self.unallocated_persons.append(person.full_name)
                             msg = '%s has reached its Maximum capacity.' % room.room_name
                             msg += 'Please add another %s.' % room.room_type
-                            click.secho(msg, fg='red', bold=True)
-
+                            click.secho(msg, fg='red', bold=True)               
 
 c = Checker()
-res = c.validate_person('kimani', 'ndegwa', 'fellow')
-res = c.validate_state_of_amity(res)
-c.generate_identifer(res)
+res = c.validate_person('kimani', 'ndegwa', 'staff')
+res = c.generate_identifer(res)
+res = c.allocate_room(res)
+print(res)
+
