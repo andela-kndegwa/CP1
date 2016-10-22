@@ -60,10 +60,10 @@ class Amity(object):
         if room_type == 'L':
             room_type = 'Living Space'
         for room in self.rooms:
-            if room.room_name == room_name.title() and \
-                    room.room_type == room_type.title():
+            if room.room_name == room_name and \
+                    room.room_type == room_type:
                 click.secho('%s --> %s ALREADY EXISTS.Please pick another name.'
-                            % (room_type, room_name.title()),
+                            % (room_type, room_name),
                             fg='red', bold=True)
                 return 'Room already exists.'
         if room_type == 'Office':
@@ -88,34 +88,31 @@ class Amity(object):
             click.secho('THERE ARE NO ROOMS IN THE SYSTEM.',
                         fg='red', bold=True)
             return 'Error. No rooms within system.'
-
+        msg = ''
+        for room in self.rooms:
+            # print(room.room_name)
+            # print(room.occupants)
+            msg += '==' * 10
+            msg += '\n'
+            msg += room.room_name + '(' + room.room_type + ')'
+            msg += '\n'
+            msg += '==' * 10
+            msg += '\n'
+            if room.occupants:
+                for occupant in room.occupants:
+                    msg += occupant
+                    msg += '\n'
+            else:
+                msg += 'There are no people in %s yet.' % room.room_name
+                msg += '\n'
         if filename is None:
-            for room in self.rooms:
-                click.secho('==' * 30, fg='cyan')
-                click.secho(room.room_name + '(' + room.room_type + ')',
-                            fg='cyan')
-                click.secho('==' * 30, fg='cyan')
-                if room.occupants:
-                    for occupant in room.occupants:
-                        click.secho(occupant)
-                else:
-                    click.secho(
-                        'There are no people in %s yet.' % room.room_name,
-                        fg='cyan')
+            click.secho(msg, fg='cyan')
             return 'Print to screen'
+
         else:
-            for room in self.rooms:
-                file = open(filename + '.txt', 'w')
-                file.write(room.room_name)
-                file.write('\n')
-                file.write('--' * 30)
-                file.write('\n')
-                if room.occupants:
-                    for occupant in room.occupants:
-                        file.write(occupant + ' ')
-                else:
-                    file.write('%s is empty' % room.room_name)
-            click.secho('Print out made to %s.txt' % filename, fg='green')
+            file = open(filename + '.txt', 'w')
+            file.write(msg)
+            click.secho('Printed to %s.txt' % filename, fg='green')
             return 'Print to file'
 
     def validate_person(self, first_name, other_name, person_type,
@@ -140,7 +137,7 @@ class Amity(object):
         if person_type == 'Staff' and accomodate == 'Y':
             accomodate = 'N'
             click.secho(
-                'A Staff member cannot be allocated accomodation.',
+                'A Staff member cannot be allocated accomodation. An office will however be allocated.',
                 fg='red', bold=True)
         fn = first_name.title() + ' ' + other_name.title()
         for person in self.people:
@@ -608,14 +605,3 @@ class Amity(object):
                 self.unallocated_persons.append(p.person_name)
         return 'Database Loaded.'
 
-
-# amity = Amity()
-# amity.create_room('o', 'lime')
-# amity.create_room('o', 'lemon')
-# amity.create_room('o', 'lorange')
-# amity.create_room('l', 'avocado')
-# validated_details = amity.validate_person('kimani', 'ndegwa', 'staff', 'y')
-# person = amity.generate_identifer(validated_details)
-# print(person.identifier)
-# amity.allocate_room(person)
-# amity.print_allocations()

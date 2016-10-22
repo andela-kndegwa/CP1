@@ -97,7 +97,7 @@ class Interactive_Amity(cmd.Cmd):
                                                       args['<other_name>'], args[
                                                           '<person_type>'],
                                                       args['--accomodate'])
-            person = amity.generate_identifer(validated_details)
+            person = amity.generate_identifier(validated_details)
             amity.allocate_room(person)
         except Exception as e:
             print(e)
