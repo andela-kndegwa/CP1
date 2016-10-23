@@ -20,7 +20,6 @@ class Amity(object):
     '''
 
     def __init__(self):
-        self.rooms = []
         self.offices = {
             'available': [],
             'unavailable': []
@@ -29,7 +28,7 @@ class Amity(object):
             'available': [],
             'unavailable': []
         }
-        # self.rooms = self.offices['available']
+        self.rooms = []
         self.fellows = []
         self.staff = []
         self.people = self.staff + self.fellows
@@ -54,19 +53,19 @@ class Amity(object):
             click.secho('Error.Please enter O or L for a room type.',
                         bold=True, fg='red')
             return 'Error. Invalid room type initial.'
-        if room_type.upper() == 'O':
+        room_type = room_type.strip().upper()
+        room_name = room_name.strip().title()
+        if room_type == 'O':
             room_type = 'Office'
-        if room_type.upper() == 'L':
+        if room_type == 'L':
             room_type = 'Living Space'
         for room in self.rooms:
-            if room.room_name == room_name.title() and \
-                    room.room_type == room_type.title():
+            if room.room_name == room_name and \
+                    room.room_type == room_type:
                 click.secho('%s --> %s ALREADY EXISTS.Please pick another name.'
-                            % (room_type, room_name.title()),
+                            % (room_type, room_name),
                             fg='red', bold=True)
                 return 'Room already exists.'
-        room_type = room_type.strip().title()
-        room_name = room_name.strip().title()
         if room_type == 'Office':
             room = Office(room_name)
             self.offices['available'].append(room.room_name)
@@ -89,41 +88,39 @@ class Amity(object):
             click.secho('THERE ARE NO ROOMS IN THE SYSTEM.',
                         fg='red', bold=True)
             return 'Error. No rooms within system.'
-
+        msg = ''
+        for room in self.rooms:
+            # print(room.room_name)
+            # print(room.occupants)
+            msg += '==' * 10
+            msg += '\n'
+            msg += room.room_name + '(' + room.room_type + ')'
+            msg += '\n'
+            msg += '==' * 10
+            msg += '\n'
+            if room.occupants:
+                for occupant in room.occupants:
+                    msg += occupant
+                    msg += '\n'
+            else:
+                msg += 'There are no people in %s yet.' % room.room_name
+                msg += '\n'
         if filename is None:
-            for room in self.rooms:
-                click.secho('==' * 30, fg='cyan')
-                click.secho(room.room_name + '(' + room.room_type + ')',
-                            fg='cyan')
-                click.secho('==' * 30, fg='cyan')
-                if room.occupants:
-                    for occupant in room.occupants:
-                        click.secho(occupant)
-                else:
-                    click.secho(
-                        'There are no people in %s yet.' % room.room_name,
-                        fg='cyan')
-        else:
-            for room in self.rooms:
-                file = open(filename + '.txt', 'w')
-                file.write(room.room_name)
-                file.write('\n')
-                file.write('--' * 30)
-                file.write('\n')
-                if room.occupants:
-                    for occupant in room.occupants:
-                        file.write(occupant + ' ')
-                else:
-                    file.write('%s is empty' % room.room_name)
-            click.secho('Print out made to %s.txt' % filename, fg='green')
+            click.secho(msg, fg='cyan')
+            return 'Print to screen'
 
-    def add_person(self, first_name, other_name, person_type,
-                   accomodate='N'):
-        # import ipdb;ipdb.set_trace()
+        else:
+            file = open(filename + '.txt', 'w')
+            file.write(msg)
+            click.secho('Printed to %s.txt' % filename, fg='green')
+            return 'Print to file'
+
+    def validate_person(self, first_name, other_name, person_type,
+                        accomodate='N'):
         if type(first_name) != str or type(other_name) != str:
             click.secho('Incorrect name type format.', fg='red')
             return 'Wrong type for name.'
-        if first_name.isalpha() is False or other_name.isalpha() is False:
+        if not first_name.isalpha() or not other_name.isalpha():
             click.secho('Person names need be alphabetical in nature',
                         fg='red', bold=True)
             return 'Non-Alphabetical names added'
@@ -138,10 +135,10 @@ class Amity(object):
         accomodate = accomodate.upper()
         person_type = person_type.title()
         if person_type == 'Staff' and accomodate == 'Y':
+            accomodate = 'N'
             click.secho(
-                'A Staff member cannot be allocated accomodation.',
+                'A Staff member cannot be allocated accomodation. An office will however be allocated.',
                 fg='red', bold=True)
-            return 'Staff cannot have wants accomodation of Y.'
         fn = first_name.title() + ' ' + other_name.title()
         for person in self.people:
             if person.full_name == fn and \
@@ -162,22 +159,28 @@ class Amity(object):
 
         if accomodate == 'Y' and person_type == 'Fellow':
             if not self.living_spaces['available']:
-                click.secho(
-                    'Please add a living space for a fellow to be allocated both room types.',
-                    fg='red', bold=True)
+                msg = 'Please add a living space for a fellow '
+                msg += 'to be allocated both room types.'
+                click.secho(msg, fg='red', bold=True)
                 return 'No Living space for fellow requiring both.'
             elif not self.offices['available']:
-                click.secho(
-                    'Please add an office for a fellow to be allocated both room types.',
-                    fg='red', bold=True)
+                msg = 'Please add an office for a fellow '
+                msg += 'to be allocated both room types.'
+                click.secho(msg, fg='red', bold=True)
                 return 'No office for fellow requiring both.'
+        return [fn, accomodate, person_type]
 
+    def generate_identifier(self, validated_details):
+        fn = validated_details[0]
+        accomodate = validated_details[1]
+        person_type = validated_details[2]
+        full_names = fn.split()
         if not self.people:
             if person_type.title() == 'Fellow':
                 f_id = 1
                 self.f_ids.append(f_id)
                 identifier = 'F' + str(f_id)
-                person = Fellow(first_name, other_name)
+                person = Fellow(full_names[0], full_names[1])
                 person.accomodate = accomodate
                 person.get_full_name()
                 person.assign_identifier(identifier)
@@ -186,14 +189,14 @@ class Amity(object):
                 s_id = 1
                 self.s_ids.append(s_id)
                 identifier = 'S' + str(s_id)
-                person = Staff(first_name, other_name)
+                person = Staff(full_names[0], full_names[1])
                 person.accomodate = accomodate
                 person.get_full_name()
                 person.assign_identifier(identifier)
                 self.staff.append(person.full_name)
         else:
             if person_type.title() == 'Fellow':
-                person = Fellow(first_name, other_name)
+                person = Fellow(full_names[0], full_names[1])
                 person.accomodate = accomodate
                 person.get_full_name()
                 f_id = self.f_ids.pop() + 1
@@ -202,7 +205,7 @@ class Amity(object):
                 person.assign_identifier(identifier)
                 self.fellows.append(person.full_name)
             elif person_type.title() == 'Staff':
-                person = Staff(first_name, other_name)
+                person = Staff(full_names[0], full_names[1])
                 person.accomodate = accomodate
                 person.get_full_name()
                 s_id = self.s_ids.pop() + 1
@@ -214,12 +217,15 @@ class Amity(object):
         click.secho('The %s %s has been created.\n' %
                     (person.person_type, person.full_name),
                     fg='green', bold=True)
-        click.secho('ALLOCATING ROOM ...', fg='cyan')
-        time.sleep(1)
+        return person
+
+    def allocate_room(self, person):
         # random allocation
         # only a fellow can be allocated a living space
         # a staff can only be allocated an office.
-        if person_type == 'Staff':
+        click.secho('ALLOCATING ROOM ...', fg='cyan')
+        time.sleep(1)
+        if person.person_type == 'Staff':
             staff_single_allocation = {}
             staff_single_allocation[person.full_name] = self.offices['available'][
                 randint(0, (len(self.offices['available']) - 1))]
@@ -237,8 +243,8 @@ class Amity(object):
                         msg += 'Please add another %s.' % room.room_type
                         click.secho(msg, fg='red', bold=True)
 
-        if person_type == 'Fellow':
-            if accomodate == 'Y':
+        if person.person_type == 'Fellow':
+            if person.accomodate == 'Y':
                 fellow_single_allocation = {}
                 fellow_single_allocation['name'] = person.full_name
                 fellow_single_allocation['office'] = self.offices['available'][
@@ -339,7 +345,7 @@ class Amity(object):
             if person.accomodate == 'N' and person.identifier == person_id:
                 if room_name in self.living_spaces['available']:
                     click.secho(
-                        'Cant move fellow from office to living space',
+                        'Cant move person from office to living space',
                         fg='red', bold=True)
                     return 'Fellow does not want accomodation'
         all_person_ids = []
@@ -597,3 +603,5 @@ class Amity(object):
                     room.add_person(p.person_name)
             if p.office_allocated == 'Unallocated':
                 self.unallocated_persons.append(p.person_name)
+        return 'Database Loaded.'
+

@@ -4,6 +4,7 @@ python:
 # command to run tests
 install:
   - pip install -r requirements.txt
+  - pip install coveralls
   - pip install coverage
 script:
   - nosetests --with-coverage
