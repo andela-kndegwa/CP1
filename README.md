@@ -1,9 +1,8 @@
-[![Build Status](https://travis-ci.org/andela-kndegwa/CP1.svg?branch=develop)](https://travis-ci.org/andela-kndegwa/CP1)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)]()
-[![Kimani Ndegwa](https://img.shields.io/badge/Kimani%20Ndegwa-FirstCheckpoint-green.svg)]()
-[![Coverage Status](https://coveralls.io/repos/github/andela-kndegwa/CP1/badge.svg?branch=staging)](https://coveralls.io/github/andela-kndegwa/CP1?branch=staging)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a73d5032f19c47a8ad6aa6decb465e32)](https://www.codacy.com/app/kimani-ndegwa/CP1?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=andela-kndegwa/CP1&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/a73d5032f19c47a8ad6aa6decb465e32)](https://www.codacy.com/app/kimani-ndegwa/CP1?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=andela-kndegwa/CP1&amp;utm_campaign=Badge_Coverage)
+[![Coverage](https://img.shields.io/badge/Coverage-85%25-green.svg)])()
+[![Kimani Ndegwa](https://img.shields.io/badge/Kimani%20Ndegwa-FirstCheckpoint-green.svg)]()
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)]()
 
 # AMITY ROOM ALLOCATION SYSTEM.
 
