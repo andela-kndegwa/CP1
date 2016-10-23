@@ -1,6 +1,5 @@
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)]()
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a73d5032f19c47a8ad6aa6decb465e32)](https://www.codacy.com/app/kimani-ndegwa/CP1?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=andela-kndegwa/CP1&amp;utm_campaign=Badge_Grade)
-[![Coverage](https://img.shields.io/badge/Coverage-85%25-green.svg)]()
+[![Coverage](https://img.shields.io/badge/coverage-85%25-green.svg)]()
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)]()
 [![Kimani Ndegwa](https://img.shields.io/badge/Kimani%20Ndegwa-FirstCheckpoint-green.svg)]()
 
@@ -55,11 +54,11 @@ load_state |(sqlite_database)|load_state my_newdatabase
 
 1. First clone this repository to your local machine using `git clone https://github.com/andela-kndegwa/CP1.git`
 
-2. Checkout into the **develop** branch using 'git checkout develop'
+2. Checkout into the **develop** branch using `git checkout develop`
 
-3. Create a *virtualenv* on your machine and install the dependencies via `pip install -r requirements.txt` and activate it.
+3. Create a **virtualenv** on your machine and install the dependencies via `pip install -r requirements.txt` and activate it.
 
-4. cd into the *amity* folder and run `python app.py`
+4. cd into the **amity** folder and run `python app.py`
 
 #4. Usage
 The following screencast shows how to run the different commands. Check it out:
@@ -68,7 +67,7 @@ The following screencast shows how to run the different commands. Check it out:
 
 #5. Tests.
 
-To run nosetests ensure that you are on within the *virtual environment* and have the following installed:
+To run nosetests ensure that you are within the *virtual environment* and have the following installed:
 
 1. *nose*
 
