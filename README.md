@@ -67,6 +67,29 @@ The following screencast shows how to run the different commands. Check it out:
 
 [![asciicast](https://asciinema.org/a/ecendttdj3a4lrp89n8luus30.png)](https://asciinema.org/a/ecendttdj3a4lrp89n8luus30)
 
+#5. Tests.
+
+To run nosetests ensure that you are on within the *virtual environment* and have the following installed:
+
+1. *nose*
+
+2. *coveralls*
+
+3. *coverage*
+
+After ensuring the above, within the **amity folder** run :
+
+`nosetests --with-coverage` and
+
+`coverage report`
+
+To run tests and view coverage.
+
+#5. IceBox.
+
+1. Making the CI work online.
+
+
 ## Credits
 
 1. [Kimani Ndegwa](https://github.com/andela-kndegwa)
