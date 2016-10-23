@@ -55,11 +55,11 @@ load_state |(sqlite_database)|load_state my_newdatabase
 
 1. First clone this repository to your local machine using `git clone https://github.com/andela-kndegwa/CP1.git`
 
-2. Checkout into the **develop** branch using 'git checkout develop'
+2. Checkout into the **develop** branch using `git checkout develop`
 
-3. Create a *virtualenv* on your machine and install the dependencies via `pip install -r requirements.txt` and activate it.
+3. Create a **virtualenv** on your machine and install the dependencies via `pip install -r requirements.txt` and activate it.
 
-4. cd into the *amity* folder and run `python app.py`
+4. cd into the **amity** folder and run `python app.py`
 
 #4. Usage
 The following screencast shows how to run the different commands. Check it out:
@@ -68,7 +68,7 @@ The following screencast shows how to run the different commands. Check it out:
 
 #5. Tests.
 
-To run nosetests ensure that you are on within the *virtual environment* and have the following installed:
+To run nosetests ensure that you are within the *virtual environment* and have the following installed:
 
 1. *nose*
 
