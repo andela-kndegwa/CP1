@@ -47,7 +47,7 @@ class TestAmityFunctionality(unittest.TestCase):
             self.assertEquals((room_count_after - room_count_before), 1)
             self.amity.create_room('o', 'oculus')
             room_count_after_two = len(self.amity.rooms)
-            self.assertAlmostEquals(
+            self.assertEquals(
                 (room_count_after_two - room_count_before), 2)
 
     def test_living_space_can_only_be_created_once(self):
