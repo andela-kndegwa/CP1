@@ -92,11 +92,11 @@ class Amity(object):
         for room in self.rooms:
             # print(room.room_name)
             # print(room.occupants)
-            msg += '==' * 10
+            msg += '==' * 20
             msg += '\n'
-            msg += room.room_name + '(' + room.room_type + ')'
+            msg += 'Occupants in ' + room.room_name + '(' + room.room_type + ')'
             msg += '\n'
-            msg += '==' * 10
+            msg += '==' * 20
             msg += '\n'
             if room.occupants:
                 for occupant in room.occupants:
@@ -106,7 +106,7 @@ class Amity(object):
                 msg += 'There are no people in %s yet.' % room.room_name
                 msg += '\n'
         if filename is None:
-            click.secho(msg, fg='cyan')
+            click.secho(msg, fg='yellow')
             return 'Print to screen'
 
         else:
@@ -214,7 +214,7 @@ class Amity(object):
                 person.assign_identifier(identifier)
                 self.fellows.append(person.full_name)
         self.people.append(person)
-        click.secho('The %s %s has been created.\n' %
+        click.secho('The %s %s has been added.\n' %
                     (person.person_type, person.full_name),
                     fg='green', bold=True)
         return person
